@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Series on PaperMod</title>
-    <link>https://adityatelange.github.io/hugo-PaperMod/series/</link>
-    <description>Recent content in Series on PaperMod</description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="https://adityatelange.github.io/hugo-PaperMod/series/index.xml" rel="self" type="application/rss+xml" />
+    <title>Series on DamonZhang🔥</title>
+    <link>https://damon-zhangb.github.io/series/</link>
+    <description>Recent content in Series on DamonZhang🔥</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
+</copyright>
+    <lastBuildDate>Tue, 26 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://damon-zhangb.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Themes Guide</title>
+      <link>https://damon-zhangb.github.io/series/themes-guide/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/series/themes-guide/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

@@ -1,33 +1,76 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on damon`s blog</title>
+    <title>Posts on DamonZhang🔥</title>
     <link>https://damon-zhangb.github.io/posts/</link>
-    <description>Recent content in Posts on damon`s blog</description>
-    <image>
-      <url>https://damon-zhangb.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://damon-zhangb.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
+    <description>Recent content in Posts on DamonZhang🔥</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 29 Oct 2021 16:27:57 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
+</copyright>
+    <lastBuildDate>Fri, 29 Oct 2021 18:04:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Secend</title>
-      <link>https://damon-zhangb.github.io/posts/secend/</link>
-      <pubDate>Fri, 29 Oct 2021 16:27:57 +0800</pubDate>
-      
-      <guid>https://damon-zhangb.github.io/posts/secend/</guid>
-      <description>http.HandleFunc(&amp;#34;/resources/spirit&amp;#34;, func(w http.ResponseWriter, r *http.Request) { data := &amp;#34;&amp;#34; if true { roleId, _ := strconv.ParseInt(r.FormValue(&amp;#34;roleId&amp;#34;), 10, 64) t, _ := strconv.ParseInt(r.FormValue(&amp;#34;serverId&amp;#34;), 10, 32) serverId := int32(t) userId, _ := strconv.Atoi(r.FormValue(&amp;#34;userId&amp;#34;)) data = service.Spirit(serverId, userId, roleId) } //res,_	:= json.Marshal(data) 	//log.Printf(&amp;#34;客户端请求智能体:/resources/spirit %+v, %s\n&amp;#34;, r, data) 	w.Write([]byte(data)) }) </description>
-    </item>
-    
-    <item>
-      <title>Hugo config配置示例</title>
+      <title>Go net/http 示例</title>
       <link>https://damon-zhangb.github.io/posts/first/</link>
-      <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
+      <pubDate>Fri, 29 Oct 2021 18:04:18 +0800</pubDate>
       
       <guid>https://damon-zhangb.github.io/posts/first/</guid>
-      <description>Desc Text.</description>
+      <description>Go net/http 示例 http.HandleFunc(&amp;quot;/login&amp;quot;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(&amp;quot;accountType&amp;quot;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(&amp;quot;account&amp;quot;) req.Pwd = r.FormValue(&amp;quot;pwd&amp;quot;) req.HeadImgUrl = r.FormValue(&amp;quot;headImgUrl&amp;quot;) req.FbToken = r.FormValue(&amp;quot;fbToken&amp;quot;) req.FbUserId = r.FormValue(&amp;quot;fbUserId&amp;quot;) logrus.Infof(&amp;quot;user login: %v&amp;quot;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  </description>
     </item>
     
+    <item>
+      <title>Diagram Support</title>
+      <link>https://damon-zhangb.github.io/posts/diagram-support/</link>
+      <pubDate>Wed, 31 Mar 2021 13:11:22 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/diagram-support/</guid>
+      <description>&lt;p&gt;Eureka supports the rendering of diagrams by using Mermaid.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Math Support</title>
+      <link>https://damon-zhangb.github.io/posts/math-support/</link>
+      <pubDate>Fri, 20 Nov 2020 22:52:56 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/math-support/</guid>
+      <description>&lt;p&gt;Eureka supports the rendering of mathematical formulas by using KaTeX.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Featured Image</title>
+      <link>https://damon-zhangb.github.io/posts/featured-image/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/featured-image/</guid>
+      <description>&lt;p&gt;Maecenas maximus, elit in ornare porttitor, nisi eros hendrerit nisl, sed fermentum nulla urna blandit tellus.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Markdown Syntax Guide</title>
+      <link>https://damon-zhangb.github.io/posts/markdown-syntax/</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/markdown-syntax/</guid>
+      <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Placeholder Text</title>
+      <link>https://damon-zhangb.github.io/posts/placeholder-text/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/placeholder-text/</guid>
+      <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Emoji Support</title>
+      <link>https://damon-zhangb.github.io/posts/emoji-support/</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/emoji-support/</guid>
+      <description>&lt;p&gt;Emoji can be enabled in a Hugo project in a number of ways.&lt;/p&gt;</description>
+    </item>
     
   </channel>
 </rss>
