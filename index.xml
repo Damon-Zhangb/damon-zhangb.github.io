@@ -9,7 +9,16 @@
       <link>https://damon-zhangb.github.io/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Tue, 15 Sep 2020 11:30:03 +0000</lastBuildDate><atom:link href="https://damon-zhangb.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 29 Oct 2021 16:27:57 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Secend</title>
+      <link>https://damon-zhangb.github.io/posts/secend/</link>
+      <pubDate>Fri, 29 Oct 2021 16:27:57 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/secend/</guid>
+      <description>http.HandleFunc(&amp;#34;/resources/spirit&amp;#34;, func(w http.ResponseWriter, r *http.Request) { data := &amp;#34;&amp;#34; if true { roleId, _ := strconv.ParseInt(r.FormValue(&amp;#34;roleId&amp;#34;), 10, 64) t, _ := strconv.ParseInt(r.FormValue(&amp;#34;serverId&amp;#34;), 10, 32) serverId := int32(t) userId, _ := strconv.Atoi(r.FormValue(&amp;#34;userId&amp;#34;)) data = service.Spirit(serverId, userId, roleId) } //res,_	:= json.Marshal(data) 	//log.Printf(&amp;#34;客户端请求智能体:/resources/spirit %+v, %s\n&amp;#34;, r, data) 	w.Write([]byte(data)) }) </description>
+    </item>
+    
     <item>
       <title>Hugo config配置示例</title>
       <link>https://damon-zhangb.github.io/posts/first/</link>
