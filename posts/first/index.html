@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en' ><meta charset="utf-8">
+<html lang='zh' ><meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
 
@@ -14,13 +14,16 @@
   href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
   as="style" onload="this.onload=null;this.rel='stylesheet'">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/solarized-light.min.css"
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/idea.min.css"
    media="print"
   onload="this.media='all';this.onload=null" crossorigin>
 <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"
    crossorigin></script>
 
   <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/dart.min.js"
+     crossorigin></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/Go.min.js"
      crossorigin></script>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"
@@ -54,11 +57,9 @@
   integrity="sha256-Zmpaaj&#43;GXFsPF5WdPArSrnW3b30dovldeKsW00xBVwE="  crossorigin></script>
 
 
-<link rel="icon" type="image/png" sizes="32x32" href="https://damon-zhangb.github.io/images/icon_hu64421c6c7700f606f0ad45d807017b09_5843_32x32_fill_box_center_3.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://damon-zhangb.github.io/images/icon_hu64421c6c7700f606f0ad45d807017b09_5843_180x180_fill_box_center_3.png">
 
 <meta name="description"
-  content="Go net/http 示例 http.HandleFunc(&quot;/login&quot;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(&quot;accountType&quot;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(&quot;account&quot;) req.Pwd = r.FormValue(&quot;pwd&quot;) req.HeadImgUrl = r.FormValue(&quot;headImgUrl&quot;) req.FbToken = r.FormValue(&quot;fbToken&quot;) req.FbUserId = r.FormValue(&quot;fbUserId&quot;) logrus.Infof(&quot;user login: %v&quot;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  ">
+  content="Go net/http 示例">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -85,37 +86,35 @@
         "@type": "WebPage",
         "@id": "https://damon-zhangb.github.io/posts/first/"
     },
-    "headline": "Go net\/http 示例 | DamonZhang🔥","datePublished": "2021-10-29T18:04:18+08:00",
+    "headline": "Go net\/http 示例 | DamonZhang🔥",
+    "image": "https://damon-zhangb.github.io/android-chrome-512x512.png",
+    "datePublished": "2021-10-29T18:04:18+08:00",
     "dateModified": "2021-10-29T18:04:18+08:00",
     "wordCount":  47 ,
+    "author": {
+        "@type": "Person",
+        "name": "Me"
+    },
     "publisher": {
         "@type": "Person",
-        "name": "C. Wang",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "https://damon-zhangb.github.io/images/icon.png"
-        }
+        "name": "Damon",
         },
-    "description": "Go net\/http 示例 http.HandleFunc(\u0026quot;\/login\u0026quot;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(\u0026quot;accountType\u0026quot;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(\u0026quot;account\u0026quot;) req.Pwd = r.FormValue(\u0026quot;pwd\u0026quot;) req.HeadImgUrl = r.FormValue(\u0026quot;headImgUrl\u0026quot;) req.FbToken = r.FormValue(\u0026quot;fbToken\u0026quot;) req.FbUserId = r.FormValue(\u0026quot;fbUserId\u0026quot;) logrus.Infof(\u0026quot;user login: %v\u0026quot;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  "
+    "description": "Go net\/http 示例"
 }
 </script><meta property="og:title" content="Go net/http 示例 | DamonZhang🔥" />
 <meta property="og:type" content="article" />
 
-
-<meta property="og:image" content="https://damon-zhangb.github.io/images/icon.png">
 
 
 <meta property="og:url" content="https://damon-zhangb.github.io/posts/first/" />
 
 
 
-
-<meta property="og:description" content="Go net/http 示例 http.HandleFunc(&quot;/login&quot;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(&quot;accountType&quot;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(&quot;account&quot;) req.Pwd = r.FormValue(&quot;pwd&quot;) req.HeadImgUrl = r.FormValue(&quot;headImgUrl&quot;) req.FbToken = r.FormValue(&quot;fbToken&quot;) req.FbUserId = r.FormValue(&quot;fbUserId&quot;) logrus.Infof(&quot;user login: %v&quot;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  " />
-
+<meta property="og:description" content="Go net/http 示例" />
 
 
 
-<meta property="og:locale" content="en" />
+<meta property="og:locale" content="zh" />
 
 
 
@@ -135,6 +134,18 @@
 
 
 <meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="Go" />
+
+
+
+
+
+
+
+
+
 
 
 
@@ -170,9 +181,9 @@
                 </div>
                 <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
                     id='lightDarkOptions'>
-                    <span class="px-4 py-1 hover:text-eureka" name="Light">Light</span>
-                    <span class="px-4 py-1 hover:text-eureka" name="Dark">Dark</span>
-                    <span class="px-4 py-1 hover:text-eureka" name="Auto">Auto</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">浅色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">深色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">自动</span>
                 </div>
             </div>
         </div>
@@ -213,7 +224,7 @@
 
 <div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
     <div
-        class="col-span-2 lg:col-start-2 lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
         <h1 class="font-bold text-3xl text-primary-text">Go net/http 示例</h1>
         <div class="flex flex-wrap flex-row items-center mt-2 text-tertiary-text">
     <div class="mr-6 my-2">
@@ -222,15 +233,33 @@
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>1 min read</span>
+        <span>1分钟阅读时长</span>
     </div>
     
     
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/categories/go/" class="hover:text-eureka">Go</a>
+        
+    </div>
+    
 
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/series/%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93/" class="hover:text-eureka">每日一库</a>
+        
+    </div>
     
 </div>
         
         
+        
+        <div class="my-4">
+            <img src="https://damon-zhangb.github.io/android-chrome-512x512.png" class="w-full" alt="Featured Image">
+        </div>
         
 
         <div class="content">
@@ -253,11 +282,67 @@
 
         </div>
         
+        <div class="my-4">
+    
+    <a href="https://damon-zhangb.github.io/tags/go/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#Go</a>
+    
+</div>
+        
         
         
 
 
         
+        
+        <div class="py-2">
+    
+    <div class="flex flex-col md:flex-row items-center my-8">
+        <a href="https://damon-zhangb.github.io/authors/me/" class="w-24 h-24 md:mr-4">
+            
+            
+            <img src="https://damon-zhangb.github.io/android-chrome-512x512.png" class="w-full bg-primary-bg rounded-full" alt="Avatar">
+            
+        </a>
+        <div class="w-full md:w-auto mt-4 md:mt-0">
+            <a href="https://damon-zhangb.github.io/authors/me/" class="block font-bold text-lg pb-1 mb-2 border-b">Zhang Bu</a>
+            <span class="block pb-2">Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos.</span>
+            
+            
+            
+            
+            
+            <a href="mailto:example@example.com" class="mr-1">
+                <i class="fab fa-fab fa-weixin"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-fab fa-qq"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-github"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-fab fa-zhihu"></i>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
         
         
         
@@ -267,7 +352,7 @@
     </div>
     <div class="md:text-right mt-4 md:mt-0">
         
-        <span class="block font-bold">Next</span>
+        <span class="block font-bold">下一页</span>
         <a href="https://damon-zhangb.github.io/posts/diagram-support/" class="block">Diagram Support</a>
         
     </div>
@@ -277,6 +362,24 @@
 
 
 
+    </div>
+    
+    <div class="col-span-2">
+        
+        
+<div class="bg-secondary-bg rounded p-6">
+    <h3 class="text-lg font-semibold mb-4">系列文章</h3>
+    <div class="content">
+        
+        
+        <a href="https://damon-zhangb.github.io/posts/first/">Go net/http 示例</a>
+        <br />
+        
+        
+    </div>
+</div>
+        
+        
     </div>
     
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zhang Bu on DamonZhang🔥</title>
+    <link>https://damon-zhangb.github.io/authors/me/</link>
+    <description>Recent content in Zhang Bu on DamonZhang🔥</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
+</copyright>
+    <lastBuildDate>Fri, 29 Oct 2021 18:04:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/authors/me/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go net/http 示例</title>
+      <link>https://damon-zhangb.github.io/posts/first/</link>
+      <pubDate>Fri, 29 Oct 2021 18:04:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/first/</guid>
+      <description>Go net/http 示例 http.HandleFunc(&amp;quot;/login&amp;quot;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(&amp;quot;accountType&amp;quot;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(&amp;quot;account&amp;quot;) req.Pwd = r.FormValue(&amp;quot;pwd&amp;quot;) req.HeadImgUrl = r.FormValue(&amp;quot;headImgUrl&amp;quot;) req.FbToken = r.FormValue(&amp;quot;fbToken&amp;quot;) req.FbUserId = r.FormValue(&amp;quot;fbUserId&amp;quot;) logrus.Infof(&amp;quot;user login: %v&amp;quot;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  </description>
+    </item>
+    
+  </channel>
+</rss>

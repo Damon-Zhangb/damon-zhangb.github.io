@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en' ><meta charset="utf-8">
+<html lang='zh' ><meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 
 
@@ -14,13 +14,16 @@
   href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
   as="style" onload="this.onload=null;this.rel='stylesheet'">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/solarized-light.min.css"
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/idea.min.css"
    media="print"
   onload="this.media='all';this.onload=null" crossorigin>
 <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"
    crossorigin></script>
 
   <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/dart.min.js"
+     crossorigin></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/Go.min.js"
      crossorigin></script>
 
 <script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"
@@ -54,8 +57,6 @@
   integrity="sha256-Zmpaaj&#43;GXFsPF5WdPArSrnW3b30dovldeKsW00xBVwE="  crossorigin></script>
 
 
-<link rel="icon" type="image/png" sizes="32x32" href="https://damon-zhangb.github.io/images/icon_hu64421c6c7700f606f0ad45d807017b09_5843_32x32_fill_box_center_3.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://damon-zhangb.github.io/images/icon_hu64421c6c7700f606f0ad45d807017b09_5843_180x180_fill_box_center_3.png">
 
 <meta name="description"
   content="Eureka is a elegant and powerful theme for Hugo.">
@@ -65,8 +66,6 @@
 <meta property="og:title" content="DamonZhang🔥" />
 <meta property="og:type" content="website" />
 
-
-<meta property="og:image" content="https://damon-zhangb.github.io/images/icon.png">
 
 
 <meta property="og:url" content="https://damon-zhangb.github.io/" />
@@ -81,7 +80,7 @@
 
 
 
-<meta property="og:locale" content="en" />
+<meta property="og:locale" content="zh" />
 
 
 
@@ -133,9 +132,9 @@
                 </div>
                 <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
                     id='lightDarkOptions'>
-                    <span class="px-4 py-1 hover:text-eureka" name="Light">Light</span>
-                    <span class="px-4 py-1 hover:text-eureka" name="Dark">Dark</span>
-                    <span class="px-4 py-1 hover:text-eureka" name="Auto">Auto</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">浅色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">深色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">自动</span>
                 </div>
             </div>
         </div>
@@ -250,6 +249,8 @@
     
       
       
+        
+      
     
   
 
@@ -262,6 +263,8 @@
     
     
       
+      
+        
       
     
 
@@ -275,7 +278,7 @@
   <div class="pl-scrollbar bg-primary-bg" 
     >
     <div class="max-w-screen-xl mx-auto">
-      <div id="pages" class="lg:w-3/4 mx-auto px-6 md:px-8 xl:px-12 py-12">
+      <div id="pages" class="w-full mx-auto px-6 md:px-8 xl:px-12 py-12">
         
   
 
@@ -303,13 +306,13 @@
   <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
   <div class="flex flex-col-reverse lg:flex-row justify-between">
   
-  <div class="w-full ">
+  <div class="w-full lg:w-2/3">
     <div class="mb-4">
   <a href="https://damon-zhangb.github.io/posts/first/" class="font-bold text-xl hover:text-eureka">Go net/http 示例</a>
 </div>
 <div class="content">
   
-    Go net/http 示例 http.HandleFunc(&#34;/login&#34;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(&#34;accountType&#34;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(&#34;account&#34;) req.Pwd = r.FormValue(&#34;pwd&#34;) req.HeadImgUrl = r.FormValue(&#34;headImgUrl&#34;) req.FbToken = r.FormValue(&#34;fbToken&#34;) req.FbUserId = r.FormValue(&#34;fbUserId&#34;) logrus.Infof(&#34;user login: %v&#34;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  
+    Go net/http 示例
   
 </div>
 
@@ -320,16 +323,34 @@
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>1 min read</span>
+        <span>1分钟阅读时长</span>
     </div>
     
     
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/categories/go/" class="hover:text-eureka">Go</a>
+        
+    </div>
+    
 
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/series/%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93/" class="hover:text-eureka">每日一库</a>
+        
+    </div>
     
 </div>
 
   </div>
 
+  
+  <div class="w-full lg:w-1/3 mb-4 lg:mb-0 lg:ml-8">
+    <img src="https://damon-zhangb.github.io/android-chrome-512x512.png" class="w-full" alt="Featured Image">
+  </div>
   
 </div>
 </div>
@@ -357,7 +378,7 @@
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>1 min read</span>
+        <span>1分钟阅读时长</span>
     </div>
     
     
@@ -394,7 +415,7 @@
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>1 min read</span>
+        <span>1分钟阅读时长</span>
     </div>
     
     
@@ -430,7 +451,7 @@
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>2 min read</span>
+        <span>2分钟阅读时长</span>
     </div>
     
     
@@ -484,7 +505,7 @@
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>3 min read</span>
+        <span>3分钟阅读时长</span>
     </div>
     
     
@@ -517,9 +538,52 @@
 </div>
 </div>
 
+<div class="mb-6">
+  <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
+  <div class="flex flex-col-reverse lg:flex-row justify-between">
+  
+  <div class="w-full ">
+    <div class="mb-4">
+  <a href="https://damon-zhangb.github.io/posts/placeholder-text/" class="font-bold text-xl hover:text-eureka">Placeholder Text</a>
+</div>
+<div class="content">
+  
+    Lorem Ipsum Dolor Si Amet
+  
+</div>
+
+<div class="flex flex-wrap flex-row items-center mt-2 text-tertiary-text">
+    <div class="mr-6 my-2">
+        <i class="fas fa-calendar mr-1"></i>
+        <span>2019-03-09</span>
+    </div>
+    <div class="mr-6 my-2">
+        <i class="fas fa-clock mr-1"></i>
+        <span>2分钟阅读时长</span>
+    </div>
+    
+    
+
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/series/themes-guide/" class="hover:text-eureka">Themes Guide</a>
+        
+    </div>
+    
+</div>
+
+  </div>
+
+  
+</div>
+</div>
+</div>
+
     <div class="px-8 pt-2 hover:text-eureka">
       
-  <a href="https://damon-zhangb.github.io/posts/" class="font-semibold">Read More</a>
+  <a href="https://damon-zhangb.github.io/posts/" class="font-semibold">阅读更多</a>
   <i class="fas fa-caret-right ml-1"></i>
 
     </div>
@@ -565,139 +629,6 @@
     
       
       
-    
-  
-
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-      
-    
-
-    
-    
-    
-    
-    
-  
-
-  <div class="pl-scrollbar bg-primary-bg" 
-    >
-    <div class="max-w-screen-xl mx-auto">
-      <div id="experiences" class="lg:w-4/5 mx-auto px-6 md:px-8 xl:px-12 py-12">
-        
-  
-
-  
-
-    
-    
-    
-    
-    
-      
-    
-    <div class="flex flex-col lg:flex-row">
-      <div class="flex-none lg:w-1/5 lg:mr-4">
-        <h2 class="font-bold text-3xl my-4">我的经历</h2>
-      </div>
-      <div class="flex-grow lg:ml-4">
-        
-<div class="mb-6">
-  <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
-    <div class="mb-4">
-      <div class="font-bold text-xl">Example Role 1</div>
-      <div class="flex flex-col md:flex-row md:justify-between">
-        <div>
-          
-          <a href="https://example.org">Example Organization 1</a>
-          
-
-          
-          <span class="ml-2 mr-2">·</span>
-          
-
-          <span>Country </span>
-        </div>
-        <div class="flex-shrink-0"> 2019 - Present</div>
-      </div>
-    </div>
-
-    <div class="content">
-      <p>Donec scelerisque egestas augue at tempor. Fusce faucibus magna in.</p>
-<ul>
-<li>Suspendisse lacinia mauris a laoreet vehicula.</li>
-<li>Aenean tincidunt enim vitae ante blandit tempor.</li>
-<li>Nam tincidunt diam quis lorem rutrum ullamcorper.</li>
-</ul>
-
-    </div>
-  </div>
-</div>
-
-<div class="mb-6">
-  <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
-    <div class="mb-4">
-      <div class="font-bold text-xl">Example Role 2</div>
-      <div class="flex flex-col md:flex-row md:justify-between">
-        <div>
-          
-          <a href="https://example.org">Example Organization 2</a>
-          
-
-          
-          <span class="ml-2 mr-2">·</span>
-          
-
-          <span>Country </span>
-        </div>
-        <div class="flex-shrink-0"> 2017 - 2019</div>
-      </div>
-    </div>
-
-    <div class="content">
-      <strong>Aliquam</strong> at <strong>rutrum</strong> ante. In sed quam faucibus.
-    </div>
-  </div>
-</div>
-
-      </div>
-    </div>
-  
-
-      </div>
-    </div>
-  </div>
-
-    
-
-  
-  
-    
-      
-  
-
-  
-
-  
-  
-  
-
-  
-    
-    
-    
-    
-      
-      
         
       
     
@@ -712,6 +643,8 @@
     
     
       
+      
+        
       
     
 
@@ -738,7 +671,7 @@
     </div>
   
   <div class="flex-grow mt-4 md:mt-0">
-    <div class="text-3xl py-4">Zhang Bu</div>
+    <div class="text-3xl py-4">Damon Zhang</div>
     <div class="w-3/12 xl:w-2/12 border-b"></div>
 
     <div class="flex items-center pt-4">
@@ -759,7 +692,7 @@
 
     
       <div class="py-8 text-lg leading-normal">
-        Aenean vel bibendum quam. Aliquam at mollis quam. Proin efficitur.
+        热爱 ···· <strong>技术</strong> 🔬 <strong>数码</strong> 💻 <strong>历史</strong> 📖 <strong>政治</strong> 🇨🇳 <strong>运动</strong> 💪 <strong>篮球</strong> 🏀
       </div>
     
   </div>
@@ -772,7 +705,7 @@
       
       
       <div class="pb-2 pr-4 md:pr-0 pt-4 md:pt-0">
-        <a href="mailto:example@example.com"><i class="fab fa-fab fa-weixin"></i></a>
+        <a href="https://github.com/Damon-Zhangb"><i class="fab fa-github"></i></a>
       </div>
     
       
@@ -781,7 +714,7 @@
       
       
       <div class="pb-2 pr-4 md:pr-0 pt-4 md:pt-0">
-        <a href="https://example.com/"><i class="fab fa-fab fa-qq"></i></a>
+        <a href="https://www.zhihu.com/people/tuo-jiang-75-13"><i class="fab fa-fab fa-zhihu"></i></a>
       </div>
     
       
@@ -790,16 +723,7 @@
       
       
       <div class="pb-2 pr-4 md:pr-0 pt-4 md:pt-0">
-        <a href="https://example.com/"><i class="fab fa-github"></i></a>
-      </div>
-    
-      
-      
-      
-      
-      
-      <div class="pb-2 pr-4 md:pr-0 pt-4 md:pt-0">
-        <a href="https://example.com/"><i class="fab fa-fab fa-zhihu"></i></a>
+        <a href="https://weibo.com/u/6967589980"><i class="fab fa-fab fa-weibo"></i></a>
       </div>
     
   </div>
@@ -825,6 +749,161 @@
 
 </div>
 
+  
+
+      </div>
+    </div>
+  </div>
+
+    
+
+  
+  
+    
+      
+  
+
+  
+
+  
+  
+  
+
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+  
+
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+
+    
+    
+    
+    
+    
+  
+
+  <div class="pl-scrollbar bg-secondary-bg" 
+    >
+    <div class="max-w-screen-xl mx-auto">
+      <div id="experiences" class="lg:w-3/4 mx-auto px-6 md:px-8 xl:px-12 py-12">
+        
+  
+
+  
+
+    
+    
+    
+    
+    
+      
+    
+    <div class="flex flex-col lg:flex-row">
+      <div class="flex-none lg:w-1/5 lg:mr-4">
+        <h2 class="font-bold text-3xl my-4">我的经历</h2>
+      </div>
+      <div class="flex-grow lg:ml-4">
+        
+<div class="mb-6">
+  <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
+    <div class="mb-4">
+      <div class="font-bold text-xl">硕士生涯</div>
+      <div class="flex flex-col md:flex-row md:justify-between">
+        <div>
+          
+          <a href="https://www.xidian.edu.cn">西安电子科技大学</a>
+          
+
+          
+          <span class="ml-2 mr-2">·</span>
+          
+
+          <span>广州·中国🇨🇳 </span>
+        </div>
+        <div class="flex-shrink-0"> 2022 - Future</div>
+      </div>
+    </div>
+
+    <div class="content">
+      即将前往<strong>西安电子科技大学</strong>广州研究院攻读<strong>计算机</strong>硕士研究生
+    </div>
+  </div>
+</div>
+
+<div class="mb-6">
+  <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
+    <div class="mb-4">
+      <div class="font-bold text-xl">本科生涯</div>
+      <div class="flex flex-col md:flex-row md:justify-between">
+        <div>
+          
+          <a href="https://www.hainanu.edu.cn">海南大学</a>
+          
+
+          
+          <span class="ml-2 mr-2">·</span>
+          
+
+          <span>海南·中国🇨🇳 </span>
+        </div>
+        <div class="flex-shrink-0"> 2017 - Present</div>
+      </div>
+    </div>
+
+    <div class="content">
+      就读于<strong>海南大学</strong>计算机科学与技术学院<strong>软件工程</strong>大数据专业
+    </div>
+  </div>
+</div>
+
+<div class="mb-6">
+  <div class="bg-secondary-bg rounded border hover:shadow-lg transition ease-in-out duration-200 px-6 pt-6 pb-4">
+    <div class="mb-4">
+      <div class="font-bold text-xl">高中生涯</div>
+      <div class="flex flex-col md:flex-row md:justify-between">
+        <div>
+          
+          <a href="https://baike.baidu.com/item/%e6%b9%96%e5%8c%97%e7%9c%81%e5%85%ac%e5%ae%89%e5%8e%bf%e7%ac%ac%e4%b8%80%e4%b8%ad%e5%ad%a6/8324642?fromtitle=%e5%85%ac%e5%ae%89%e4%b8%80%e4%b8%ad&amp;fromid=6028589&amp;fr=aladdin">公安一中</a>
+          
+
+          
+          <span class="ml-2 mr-2">·</span>
+          
+
+          <span>荆州·中国🇨🇳 </span>
+        </div>
+        <div class="flex-shrink-0"> 2015 - 2018</div>
+      </div>
+    </div>
+
+    <div class="content">
+      期待校友的偶遇
+    </div>
+  </div>
+</div>
+
+      </div>
+    </div>
   
 
       </div>
