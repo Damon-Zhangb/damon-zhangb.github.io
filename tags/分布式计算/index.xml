@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>分布式计算 on DamonZhang🔥</title>
+    <link>https://damon-zhangb.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97/</link>
+    <description>Recent content in 分布式计算 on DamonZhang🔥</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
+</copyright>
+    <lastBuildDate>Mon, 01 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ProtoBuf序列化协议</title>
+      <link>https://damon-zhangb.github.io/posts/protobuf%E5%BA%8F%E5%88%97%E5%8F%B7%E5%8D%8F%E8%AE%AE/</link>
+      <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/protobuf%E5%BA%8F%E5%88%97%E5%8F%B7%E5%8D%8F%E8%AE%AE/</guid>
+      <description>ProtoBuf序列化协议 简介 由于RPC远程调用涉及的函数可能非常之远，远到它们之间说着完全不同的语言，语言就成了两边的沟通障碍。而Protobuf因为支持多种不同的语言（甚至不支持的语言也可以扩展支持），其本身特性也非常方便描述服务的接口（也就是方法列表），因此非常适合作为RPC世界的接口交流语言。
+Protocol Buffers（简称：ProtoBuf）是一种序列化数据结构的协议。对于透过管道(pipeline)或存储资料进行通信的程序开发上是很有用的。这个方法包含一个接口描述语言，描述一些数据结构，并提供程序工具根据这些描述产生代码，用于将这些数据结构产生或解析资料流。</description>
+    </item>
+    
+  </channel>
+</rss>

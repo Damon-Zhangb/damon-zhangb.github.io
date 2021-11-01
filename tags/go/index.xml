@@ -8,14 +8,14 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Fri, 29 Oct 2021 18:04:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 01 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Go net/http 示例</title>
-      <link>https://damon-zhangb.github.io/posts/first/</link>
-      <pubDate>Fri, 29 Oct 2021 18:04:18 +0800</pubDate>
+      <title>Go 每日一库之 Gin</title>
+      <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/</link>
+      <pubDate>Mon, 01 Nov 2021 09:30:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/first/</guid>
-      <description>Go net/http 示例 http.HandleFunc(&amp;quot;/login&amp;quot;, func(w http.ResponseWriter, r *http.Request) { var req model.LoginReq accountType, _ := strconv.ParseInt(r.FormValue(&amp;quot;accountType&amp;quot;), 10, 32) req.AccountType = int32(accountType) req.Account = r.FormValue(&amp;quot;account&amp;quot;) req.Pwd = r.FormValue(&amp;quot;pwd&amp;quot;) req.HeadImgUrl = r.FormValue(&amp;quot;headImgUrl&amp;quot;) req.FbToken = r.FormValue(&amp;quot;fbToken&amp;quot;) req.FbUserId = r.FormValue(&amp;quot;fbUserId&amp;quot;) logrus.Infof(&amp;quot;user login: %v&amp;quot;, req) res, _ := json.Marshal(service.Login(req, *r)) w.Write(res) })  </description>
+      <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/</guid>
+      <description>Go 每日一库之 Gin 1.简介  Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点 对于golang而言，web框架的依赖要远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错 借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范  hello world package main import ( &amp;quot;net/http&amp;quot; &amp;quot;github.com/gin-gonic/gin&amp;quot; ) func main() { // 1.创建路由 r := gin.Default() // 2.绑定路由规则，执行的函数 // gin.Context，封装了request和response r.GET(&amp;quot;/&amp;quot;, func(c *gin.Context) { c.String(http.StatusOK, &amp;quot;hello World!&amp;quot;) }) // 3.监听端口，默认在8080 // Run(&amp;quot;里面不指定端口号默认为8080&amp;quot;) r.Run(&amp;quot;:8000&amp;quot;) }  </description>
     </item>
     
   </channel>

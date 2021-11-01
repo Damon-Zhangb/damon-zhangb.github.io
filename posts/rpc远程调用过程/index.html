@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang='zh' ><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+<title>RPC远程过程调用（1） | DamonZhang🔥</title>
+
+<meta name="generator" content="Hugo Eureka 0.8.3" />
+<link rel="stylesheet" href="https://damon-zhangb.github.io/css/eureka.min.css">
+<script defer src="https://damon-zhangb.github.io/js/eureka.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/idea.min.css"
+   media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"
+   crossorigin></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/dart.min.js"
+     crossorigin></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/Go.min.js"
+     crossorigin></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"
+   integrity="sha256-uNYoXefWRqv&#43;PsIF/OflNmwtKM4lStn9yrz2gVl6ymo="  crossorigin></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+   integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"  media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" 
+  integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"  crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+   integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"  crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" 
+  integrity="sha256-Zmpaaj&#43;GXFsPF5WdPArSrnW3b30dovldeKsW00xBVwE="  crossorigin></script>
+
+
+
+<meta name="description"
+  content="远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"Posts",
+      "item":"https://damon-zhangb.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"RPC远程过程调用（1）",
+      "item":"https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/"}]
+}
+</script>
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/"
+    },
+    "headline": "RPC远程过程调用（1） | DamonZhang🔥","datePublished": "2021-11-01T10:40:18+08:00",
+    "dateModified": "2021-11-01T10:40:18+08:00",
+    "wordCount":  565 ,
+    "author": {
+        "@type": "Person",
+        "name": "Me"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Damon",
+        },
+    "description": "远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。"
+}
+</script><meta property="og:title" content="RPC远程过程调用（1） | DamonZhang🔥" />
+<meta property="og:type" content="article" />
+
+
+
+<meta property="og:url" content="https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/" />
+
+
+
+<meta property="og:description" content="远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。" />
+
+
+
+<meta property="og:locale" content="zh" />
+
+
+
+
+<meta property="og:site_name" content="DamonZhang🔥" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2021-11-01T10:40:18&#43;08:00" />
+
+
+<meta property="article:modified_time" content="2021-11-01T10:40:18&#43;08:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="分布式技术" />
+
+
+
+
+
+<body class="flex flex-col min-h-screen">
+  <header class="fixed flex items-center w-full min-h-16 pl-scrollbar z-50 bg-secondary-bg shadow-sm">
+    <div class="w-full max-w-screen-xl mx-auto"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    if (((storageColorScheme == 'Auto' || storageColorScheme == null) && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+</script>
+<nav class="flex items-center justify-between flex-wrap px-4 py-4 md:py-0">
+    <a href="/" class="mr-6 text-primary-text text-xl font-bold">DamonZhang🔥</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:flex-grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="md:flex md:h-16 text-sm md:flex-grow pb-4 md:pb-0 border-b md:border-b-0">
+            <a href="/#about" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  mr-4">关于我</a>
+            <a href="/posts/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  selected-menu-item  mr-4">文章</a>
+            <a href="/docs/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  mr-4">档案</a>
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    <i class="fas fa-adjust"></i>
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">浅色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">深色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">自动</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    
+    let element = document.getElementById('lightDarkMode')
+    if (storageColorScheme == null || storageColorScheme == 'Auto') {
+        document.addEventListener('DOMContentLoaded', () => {
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
+        })
+    } else if (storageColorScheme == "Light") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'sun')
+        element.firstElementChild.classList.add('fa-sun')
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+    });
+</script>
+</div>
+  </header>
+  <main class="flex-grow pt-16">
+    <div class="pl-scrollbar">
+      <div class="w-full max-w-screen-xl lg:px-4 xl:px-8 mx-auto">
+
+
+<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+        <h1 class="font-bold text-3xl text-primary-text">RPC远程过程调用（1）</h1>
+        <div class="flex flex-wrap flex-row items-center mt-2 text-tertiary-text">
+    <div class="mr-6 my-2">
+        <i class="fas fa-calendar mr-1"></i>
+        <span>2021-11-01</span>
+    </div>
+    <div class="mr-6 my-2">
+        <i class="fas fa-clock mr-1"></i>
+        <span>3分钟阅读时长</span>
+    </div>
+    
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/categories/%E7%90%86%E8%AE%BA/" class="hover:text-eureka">理论</a>
+        
+    </div>
+    
+
+    
+</div>
+        
+        
+        
+
+        <div class="content">
+            <h1 id="rpc远程过程调用1">RPC远程过程调用（1）</h1>
+<h2 id="简介">简介</h2>
+<p><em><strong>远程过程调用</strong></em>（Remote Procedure Call，缩写为 <strong>RPC</strong>）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。</p>
+<p>通俗地说就是<strong><em>RPC</em>调用远处的一个函数</strong>。远处到底有多远呢？可能是同一个文件内的不同函数，也可能是同一个机器的另一个进程的函数，还可能是远在火星好奇号上面的某个秘密方法。</p>
+<p>本章将讨论RPC的基本用法，如何针对不同场景设计自己的RPC服务。</p>
+<h2 id="理论">理论</h2>
+<p>在一个典型 RPC 的使用场景中，包含了<strong>服务发现</strong>、<strong>负载</strong>、<strong>容错</strong>、<strong>网络传输</strong>、<strong>序列化</strong>等组件，其中“<strong>RPC 协议</strong>”就指明了程序如何进行网络传输和序列化。</p>
+<p><img src="/RPC/1.jpg" alt="&ldquo;框架&rdquo;"></p>
+<center>图1-框架图</center>
+<p>一个 RPC 的核心功能主要有 5 个部分组成，分别是：客户端、客户端 Stub、网络传输模块、服务端 Stub、服务端等。</p>
+<p><img src="/RPC/2.jpg" alt="&ldquo;核心功能&rdquo;"></p>
+<center>图2-核心功能</center>
+<p><img src="/RPC/3.jpg" alt=""></p>
+<h5 id="下面分别介绍核心-rpc-框架的重要组成">下面分别介绍核心 RPC 框架的<strong>重要组成</strong>：</h5>
+<ul>
+<li><strong>客户端</strong>(Client)：服务调用方。</li>
+<li><strong>客户端存根</strong>(Client Stub)：存放服务端地址信息，将客户端的请求参数数据信息打包成网络消息，再通过网络传输发送给服务端。</li>
+<li><strong>服务端存根</strong>(Server Stub)：接收客户端发送过来的请求消息并进行解包，然后再调用本地服务进行处理。</li>
+<li>**服务端(**Server)：服务的真正提供者。</li>
+<li><strong>Network Service</strong>：底层传输，可以是 TCP 或 HTTP。</li>
+</ul>
+<h5 id="服务的调用过程为">服务的<strong>调用过程</strong>为：</h5>
+<ol>
+<li><strong>client</strong>调用<strong>client stub</strong>，这是一次本地过程调用</li>
+<li>client stub将参数打包成一个消息，然后发送这个消息。打包过程也叫做 <strong>marshalling</strong></li>
+<li><strong>client</strong>所在的系统将消息发送给<strong>server</strong></li>
+<li><strong>server</strong>的的系统将收到的包传给<strong>server stub</strong></li>
+<li><strong>server stub</strong>解包得到参数。 解包也被称作 <strong>unmarshalling</strong></li>
+<li>最后<strong>server stub</strong>调用服务过程. 返回结果按照相反的步骤传给<strong>client</strong></li>
+</ol>
+<h5 id="总结一下rpc要解决的两个问题">总结一下，<strong>RPC要解决的两个问题：</strong></h5>
+<ol>
+<li><strong>解决分布式系统中，服务之间的调用问题。</strong></li>
+<li><strong>远程调用时，要能够像本地调用一样方便，让调用者感知不到远程调用的逻辑。</strong></li>
+</ol>
+<h2 id="hello-world">Hello World</h2>
+<p>Go语言的RPC包的路径为net/rpc，也就是放在了net包目录下面。因此我们可以猜测该RPC包是建立在net包基础之上的。</p>
+<p><em>我们先构造一个HelloService类型，其中的Hello方法用于实现打印功能：</em></p>
+<pre><code class="language-go">type HelloService struct {}
+
+func (p *HelloService) Hello(request string, reply *string) error {
+    *reply = &quot;hello:&quot; + request
+    return nil
+}
+</code></pre>
+<p>其中Hello方法必须满足Go语言的RPC规则：<strong>方法只能有两个可序列化的参数，其中第二个参数是指针类型，并且返回一个error类型，同时必须是公开的方法。</strong></p>
+<p><em>然后就可以将HelloService类型的对象注册为一个RPC服务：</em></p>
+<pre><code class="language-go">func main() {
+    rpc.RegisterName(&quot;HelloService&quot;, new(HelloService))
+
+    listener, err := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;ListenTCP error:&quot;, err)
+    }
+
+    conn, err := listener.Accept()
+    if err != nil {
+        log.Fatal(&quot;Accept error:&quot;, err)
+    }
+
+    rpc.ServeConn(conn)
+}
+</code></pre>
+<p>其中<strong>rpc.Register</strong>函数调用会将对象类型中所有满足RPC规则的对象方法注册为RPC函数，所有注册的方法会放在“<strong>HelloService</strong>”服务空间之下。然后我们建立一个唯一的TCP链接，并且通过<strong>rpc.ServeConn</strong>函数在该TCP链接上为对方提供RPC服务。</p>
+<p><em>下面是客户端请求HelloService服务的代码：</em></p>
+<pre><code class="language-go">func main() {
+    client, err := rpc.Dial(&quot;tcp&quot;, &quot;localhost:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;dialing:&quot;, err)
+    }
+
+    var reply string
+    err = client.Call(&quot;HelloService.Hello&quot;, &quot;hello&quot;, &amp;reply)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(reply)
+}
+</code></pre>
+<p>首先是通过<strong>rpc.Dial</strong>拨号RPC服务，然后通过<strong>client.Call</strong>调用具体的RPC方法。在调用<strong>client.Call</strong>时，第一个参数是<strong>用点号链接的RPC服务名字和方法名字</strong>，第二和第三个参数分别我们<strong>定义RPC方法的两个参数</strong>。</p>
+<p>由这个例子可以看出RPC的使用其实非常简单。</p>
+<h2 id="更安全的rpc接口">更安全的RPC接口</h2>
+<p>在涉及RPC的应用中，作为开发人员一般至少有三种角色：首先是<strong>服务端实现RPC方法的开发人员</strong>，其次是<strong>客户端调用RPC方法的人员</strong>，最后也是最重要的是<strong>制定服务端和客户端RPC接口规范的设计人员</strong>。在前面的例子中我们为了简化将以上几种角色的工作全部放到了一起，虽然看似实现简单，但是不利于后期的维护和工作的切割。</p>
+<p><em>如果要重构HelloService服务，第一步需要明确服务的名字和接口：</em></p>
+<pre><code class="language-go">const HelloServiceName = &quot;path/to/pkg.HelloService&quot;
+
+type HelloServiceInterface = interface {
+    Hello(request string, reply *string) error
+}
+
+func RegisterHelloService(svc HelloServiceInterface) error {
+    return rpc.RegisterName(HelloServiceName, svc)
+}
+</code></pre>
+<p>我们将RPC服务的接口规范分为三个部分：首先是<strong>服务的名字</strong>，然后是<strong>服务要实现的详细方法列表</strong>，最后是<strong>注册该类型服务的函数</strong>。为了避免名字冲突，我们在RPC服务的名字中增加了包路径前缀（这个是RPC服务抽象的包路径，并非完全等价Go语言的包路径）。<strong>RegisterHelloService</strong>注册服务时，编译器会要求传入的对象满足<strong>HelloServiceInterface</strong>接口。</p>
+<p><em>在定义了RPC服务接口规范之后，客户端就可以根据规范编写RPC调用的代码了</em></p>
+<pre><code class="language-go">func main() {
+    client, err := rpc.Dial(&quot;tcp&quot;, &quot;localhost:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;dialing:&quot;, err)
+    }
+
+    var reply string
+    err = client.Call(HelloServiceName+&quot;.Hello&quot;, &quot;hello&quot;, &amp;reply)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+</code></pre>
+<p>其中唯一的变化是<strong>client.Call</strong>的第一个参数用HelloServiceName+&quot;.Hello&quot;代替了**&ldquo;HelloService.Hello&rdquo;**。然而通过**client.Call**函数调用RPC方法依然比较繁琐，同时参数的类型依然无法得到编译器提供的安全保障。</p>
+<p><em>为了简化客户端用户调用RPC函数，我们在可以在接口规范部分增加对客户端的简单包装：</em></p>
+<pre><code class="language-go">type HelloServiceClient struct {
+    *rpc.Client
+}
+
+var _ HelloServiceInterface = (*HelloServiceClient)(nil)
+
+func DialHelloService(network, address string) (*HelloServiceClient, error) {
+    c, err := rpc.Dial(network, address)
+    if err != nil {
+        return nil, err
+    }
+    return &amp;HelloServiceClient{Client: c}, nil
+}
+
+func (p *HelloServiceClient) Hello(request string, reply *string) error {
+    return p.Client.Call(HelloServiceName+&quot;.Hello&quot;, request, reply)
+}
+</code></pre>
+<p>我们在接口规范中针对客户端新增加了<strong>HelloServiceClient</strong>类型，该类型也必须满足<strong>HelloServiceInterface</strong>接口，这样客户端用户就可以直接通过接口对应的方法调用RPC函数。同时提供了一个<strong>DialHelloService</strong>方法，直接拨号<strong>HelloService</strong>服务。</p>
+<p><em>基于新的客户端接口，我们可以简化客户端用户的代码：</em></p>
+<pre><code class="language-go">func main() {
+    client, err := DialHelloService(&quot;tcp&quot;, &quot;localhost:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;dialing:&quot;, err)
+    }
+
+    var reply string
+    err = client.Hello(&quot;hello&quot;, &amp;reply)
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+</code></pre>
+<p>现在客户端用户不用再担心RPC方法名字或参数类型不匹配等低级错误的发生。</p>
+<p><em>最后是基于RPC接口规范编写真实的服务端代码：</em></p>
+<pre><code class="language-go">type HelloService struct {}
+
+func (p *HelloService) Hello(request string, reply *string) error {
+    *reply = &quot;hello:&quot; + request
+    return nil
+}
+
+func main() {
+    RegisterHelloService(new(HelloService))
+
+    listener, err := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;ListenTCP error:&quot;, err)
+    }
+
+    for {
+        conn, err := listener.Accept()
+        if err != nil {
+            log.Fatal(&quot;Accept error:&quot;, err)
+        }
+
+        go rpc.ServeConn(conn)
+    }
+}
+</code></pre>
+<p>在新的RPC服务端实现中，我们用<strong>RegisterHelloService</strong>函数来注册函数，这样不仅可以避免命名服务名称的工作，同时也保证了传入的服务对象满足了RPC接口的定义。最后我们新的服务改为支持多个TCP链接，然后为每个TCP链接提供RPC服务。</p>
+<h2 id="跨语言的rpc">跨语言的RPC</h2>
+<p>标准库的RPC默认采用Go语言特有的gob编码，因此从其它语言调用Go语言实现的RPC服务将比较困难。在互联网的微服务时代，每个RPC以及服务的使用者都可能采用不同的编程语言，因此跨语言是互联网时代RPC的一个首要条件。得益于RPC的框架设计，Go语言的RPC其实也是很容易实现跨语言支持的。</p>
+<p>Go语言的RPC框架有两个比较有特色的设计：一个是<strong>RPC数据打包时可以通过插件实现自定义的编码和解码</strong>；另一个是<strong>RPC建立在抽象的io.ReadWriteCloser接口之上的</strong>，我们可以将RPC架设在不同的通讯协议之上。这里我们将尝试通过官方自带的net/rpc/jsonrpc扩展实现一个跨语言的RPC。</p>
+<p><em>首先是基于json编码重新实现RPC服务：</em></p>
+<pre><code class="language-go">func main() {
+    rpc.RegisterName(&quot;HelloService&quot;, new(HelloService))
+
+    listener, err := net.Listen(&quot;tcp&quot;, &quot;:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;ListenTCP error:&quot;, err)
+    }
+
+    for {
+        conn, err := listener.Accept()
+        if err != nil {
+            log.Fatal(&quot;Accept error:&quot;, err)
+        }
+
+        go rpc.ServeCodec(jsonrpc.NewServerCodec(conn))
+    }
+}
+</code></pre>
+<p>代码中最大的变化是用<strong>rpc.ServeCodec</strong>函数替代了<strong>rpc.ServeConn</strong>函数，传入的参数是针对服务端的json编解码器。</p>
+<p><em>然后是实现json版本的客户端：</em></p>
+<pre><code class="language-go">func main() {
+    conn, err := net.Dial(&quot;tcp&quot;, &quot;localhost:1234&quot;)
+    if err != nil {
+        log.Fatal(&quot;net.Dial:&quot;, err)
+    }
+
+    client := rpc.NewClientWithCodec(jsonrpc.NewClientCodec(conn))
+
+    var reply string
+    err = client.Call(&quot;HelloService.Hello&quot;, &quot;hello&quot;, &amp;reply)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println(reply)
+}
+</code></pre>
+<p>先手工调用<strong>net.Dial</strong>函数建立TCP链接，然后基于该链接建立针对客户端的json编解码器。</p>
+<p>在确保客户端可以正常调用RPC服务的方法之后，我们用一个普通的TCP服务代替Go语言版本的RPC服务，这样可以查看客户端调用时发送的数据格式。比如通过nc命令<code>nc -l 1234</code>在同样的端口启动一个TCP服务。然后再次执行一次RPC调用将会发现nc输出了以下的信息：</p>
+<pre><code class="language-json">{&quot;method&quot;:&quot;HelloService.Hello&quot;,&quot;params&quot;:[&quot;hello&quot;],&quot;id&quot;:0}
+</code></pre>
+<p>这是一个json编码的数据，其中<strong>method</strong>部分对应要调用的rpc服务和方法组合成的名字，<strong>params</strong>部分的第一个元素为参数，<strong>id</strong>是由调用端维护的一个唯一的调用编号。</p>
+<p>请求的json数据对象在内部对应两个结构体：</p>
+<p>客户端是<strong>clientRequest</strong>，服务端是<strong>serverRequest</strong>。<strong>clientRequest</strong>和<strong>serverRequest</strong>结构体的内容基本是一致的：</p>
+<pre><code class="language-go">type clientRequest struct {
+    Method string         `json:&quot;method&quot;`
+    Params [1]interface{} `json:&quot;params&quot;`
+    Id     uint64         `json:&quot;id&quot;`
+}
+
+type serverRequest struct {
+    Method string           `json:&quot;method&quot;`
+    Params *json.RawMessage `json:&quot;params&quot;`
+    Id     *json.RawMessage `json:&quot;id&quot;`
+}
+</code></pre>
+<p>在获取到RPC调用对应的json数据后，我们可以通过直接向架设了RPC服务的TCP服务器发送json数据模拟RPC方法调用：</p>
+<pre><code class="language-shell">$ echo -e '{&quot;method&quot;:&quot;HelloService.Hello&quot;,&quot;params&quot;:[&quot;hello&quot;],&quot;id&quot;:1}' | nc localhost 1234
+</code></pre>
+<p>返回的结果也是一个json格式的数据：</p>
+<pre><code class="language-json">{&quot;id&quot;:1,&quot;result&quot;:&quot;hello:hello&quot;,&quot;error&quot;:null}
+</code></pre>
+<p>其中<strong>id</strong>对应输入的<strong>id</strong>参数，<strong>result</strong>为返回的结果，<strong>error</strong>部分在出问题时表示错误信息。对于顺序调用来说，id不是必须的。但是Go语言的RPC框架支持异步调用，当返回结果的顺序和调用的顺序不一致时，可以通过id来识别对应的调用。</p>
+<p>返回的json数据也是对应内部的两个结构体：客户端是clientResponse，服务端是serverResponse。两个结构体的内容同样也是类似的：</p>
+<pre><code class="language-go">type clientResponse struct {
+    Id     uint64           `json:&quot;id&quot;`
+    Result *json.RawMessage `json:&quot;result&quot;`
+    Error  interface{}      `json:&quot;error&quot;`
+}
+
+type serverResponse struct {
+    Id     *json.RawMessage `json:&quot;id&quot;`
+    Result interface{}      `json:&quot;result&quot;`
+    Error  interface{}      `json:&quot;error&quot;`
+}
+</code></pre>
+<p>因此无论采用何种语言，只要遵循同样的json结构，以同样的流程就可以和Go语言编写的RPC服务进行通信。这样我们就实现了跨语言的RPC。</p>
+<h2 id="http上的rpc">Http上的rpc</h2>
+<p>Go语言内在的RPC框架已经支持在Http协议上提供RPC服务。但是框架的http服务同样采用了内置的gob协议，并且没有提供采用其它协议的接口，因此从其它语言依然无法访问的。在前面的例子中，我们已经实现了在TCP协议之上运行jsonrpc服务，并且通过nc命令行工具成功实现了RPC方法调用。现在我们尝试在http协议上提供jsonrpc服务。</p>
+<p><em>新的RPC服务其实是一个类似REST规范的接口，接收请求并采用相应处理流程：</em></p>
+<pre><code class="language-go">func main() {
+    rpc.RegisterName(&quot;HelloService&quot;, new(HelloService))
+
+    http.HandleFunc(&quot;/jsonrpc&quot;, func(w http.ResponseWriter, r *http.Request) {
+        var conn io.ReadWriteCloser = struct {
+            io.Writer
+            io.ReadCloser
+        }{
+            ReadCloser: r.Body,
+            Writer:     w,
+        }
+
+        rpc.ServeRequest(jsonrpc.NewServerCodec(conn))
+    })
+
+    http.ListenAndServe(&quot;:1234&quot;, nil)
+}
+</code></pre>
+<p>RPC的服务架设在“/jsonrpc”路径，在处理函数中基于<strong>http.ResponseWriter</strong>和<strong>http.Request</strong>类型的参数构造一个<strong>io.ReadWriteCloser</strong>类型的conn通道。然后基于conn构建针对服务端的json编码解码器。最后通过<strong>rpc.ServeRequest</strong>函数为每次请求处理一次RPC方法调用。</p>
+<p><em>模拟一次RPC调用的过程就是向该链接发送一个json字符串：</em></p>
+<pre><code class="language-shell">$ curl localhost:1234/jsonrpc -X POST \
+    --data '{&quot;method&quot;:&quot;HelloService.Hello&quot;,&quot;params&quot;:[&quot;hello&quot;],&quot;id&quot;:0}'
+</code></pre>
+<p><em>返回的结果依然是json字符串：</em></p>
+<pre><code class="language-json">{&quot;id&quot;:0,&quot;result&quot;:&quot;hello:hello&quot;,&quot;error&quot;:null}
+</code></pre>
+<p>这样就可以很方便地从不同语言中访问RPC服务了。</p>
+
+        </div>
+        
+        <div class="my-4">
+    
+    <a href="https://damon-zhangb.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#分布式技术</a>
+    
+</div>
+        
+        
+        
+
+
+        
+        
+        <div class="py-2">
+    
+    <div class="flex flex-col md:flex-row items-center my-8">
+        <a href="https://damon-zhangb.github.io/authors/me/" class="w-24 h-24 md:mr-4">
+            
+            
+            <img src="https://damon-zhangb.github.io/android-chrome-512x512.png" class="w-full bg-primary-bg rounded-full" alt="Avatar">
+            
+        </a>
+        <div class="w-full md:w-auto mt-4 md:mt-0">
+            <a href="https://damon-zhangb.github.io/authors/me/" class="block font-bold text-lg pb-1 mb-2 border-b">Zhang Bu</a>
+            <span class="block pb-2">Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos.</span>
+            
+            
+            
+            
+            
+            <a href="mailto:example@example.com" class="mr-1">
+                <i class="fab fa-fab fa-weixin"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-fab fa-qq"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-github"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-fab fa-zhihu"></i>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
+        
+        
+        
+<div class="flex flex-col md:flex-row md:justify-between -mx-2 mt-4 px-2 pt-4 border-t">
+    <div>
+        
+        <span class="block font-bold">上一页</span>
+        <a href="https://damon-zhangb.github.io/posts/protobuf%E5%BA%8F%E5%88%97%E5%8F%B7%E5%8D%8F%E8%AE%AE/" class="block">ProtoBuf序列化协议</a>
+        
+    </div>
+    <div class="md:text-right mt-4 md:mt-0">
+        
+        <span class="block font-bold">下一页</span>
+        <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/" class="block">Go 每日一库之 Gin</a>
+        
+    </div>
+</div>
+
+        
+
+
+
+    </div>
+    
+    <div class="col-span-2">
+        
+        
+        <div class="sticky top-16 z-10 hidden lg:block px-6 py-4  bg-primary-bg ">
+    <span class="text-lg font-semibold">本页内容</span>
+</div>
+<div class="sticky-toc hidden lg:block px-6 pb-6 ">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#理论">理论</a>
+      <ul>
+        <li>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#下面分别介绍核心-rpc-框架的重要组成">下面分别介绍核心 RPC 框架的<strong>重要组成</strong>：</a></li>
+                <li><a href="#服务的调用过程为">服务的<strong>调用过程</strong>为：</a></li>
+                <li><a href="#总结一下rpc要解决的两个问题">总结一下，<strong>RPC要解决的两个问题：</strong></a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#hello-world">Hello World</a></li>
+    <li><a href="#更安全的rpc接口">更安全的RPC接口</a></li>
+    <li><a href="#跨语言的rpc">跨语言的RPC</a></li>
+    <li><a href="#http上的rpc">Http上的rpc</a></li>
+  </ul>
+</nav>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        enableStickyToc();
+    });
+</script>
+        
+    </div>
+    
+
+    
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+
+      </div>
+    </div>
+    
+  </main>
+  <footer class="pl-scrollbar">
+    <div class="w-full max-w-screen-xl mx-auto"><div class="text-center p-6 pin-b">
+    <p class="text-sm text-tertiary-text">&copy; 2021 <a href="https://github.com/Damon-Zhangb">Damon.Zhang</a>
+ &middot;  Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</div></div>
+  </footer>
+</body>
+
+</html>
