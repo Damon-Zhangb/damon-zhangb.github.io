@@ -11,20 +11,34 @@
     <lastBuildDate>Mon, 01 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ProtoBuf序列化协议</title>
-      <link>https://damon-zhangb.github.io/posts/protobuf%E5%BA%8F%E5%88%97%E5%8F%B7%E5%8D%8F%E8%AE%AE/</link>
+      <link>https://damon-zhangb.github.io/posts/protobuf/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/protobuf%E5%BA%8F%E5%88%97%E5%8F%B7%E5%8D%8F%E8%AE%AE/</guid>
+      <guid>https://damon-zhangb.github.io/posts/protobuf/</guid>
       <description>ProtoBuf序列化协议 简介 由于RPC远程调用涉及的函数可能非常之远，远到它们之间说着完全不同的语言，语言就成了两边的沟通障碍。而Protobuf因为支持多种不同的语言（甚至不支持的语言也可以扩展支持），其本身特性也非常方便描述服务的接口（也就是方法列表），因此非常适合作为RPC世界的接口交流语言。
-Protocol Buffers（简称：ProtoBuf）是一种序列化数据结构的协议。对于透过管道(pipeline)或存储资料进行通信的程序开发上是很有用的。这个方法包含一个接口描述语言，描述一些数据结构，并提供程序工具根据这些描述产生代码，用于将这些数据结构产生或解析资料流。</description>
+Protocol Buffers（简称：ProtoBuf）是一种序列化数据结构的协议。对于透过管道(pipeline)或存储资料进行通信的程序开发上是很有用的。这个方法包含一个接口描述语言，描述一些数据结构，并提供程序工具根据这些描述产生代码，用于将这些数据结构产生或解析资料流。
+序列化 **序列化(serialization、marshalling)的过程是指将数据结构或者对象的状态转换成可以存储(比如文件、内存)或者传输的格式(比如网络)。反向操作就是反序列化(deserialization、unmarshalling)**的过程。
+例如XML、JSON、YAML等。
+Protobuf支持很多语言，比如C++、C#、Dart、Go、Java、Python、Rust等，同时也是跨平台的，所以得到了广泛的应用。
+proto3 一个简单的例子 首先让我们看一个简单的例子simple.proto:
+syntax = &amp;quot;proto3&amp;quot;; message SearchRequest { string query = 1; int32 page_number = 2; int32 result_per_page = 3; }  第一行指定protobuf的版本，这里是以proto3格式定义。你还可以指定为proto2。如果没有指定，默认以proto2格式定义。
+它定义了一个message类型: SearchRequest， 它包含三个字段query、page_number、result_per_page,它会被protoc编译成不同的编程语言的相应对象，比如Java中的class、Go中的struct等。
+字段是以[ repeated ] type fieldName = fieldNumber [ fieldOptions ] ;格式定义的。这个例子是一个简单的例子，采用了type fieldName = fieldNumber格式定义的。
+比如第一个字段query, 首先是它的类型string，其次是字段的名称，然后是等号=, 之后是字段的序号，然后是分号。
+这是普通的字段定义，当然还有一些复杂的一些字段定义，比如Oneof、Map、Reserved、enum定义，下一节我们再详细讲。
+运行编译器，指定源目录（应用程序的源代码所在的地方——如果您不提供值，则使用当前目录）、目标目录（您希望生成的代码去的地方；通常与$SRC_DIR相同）和.proto的路径。在这种情况下，您将调用：
+protoc -I=$SRC_DIR --go_out=$DST_DIR $SRC_DIR/addressbook.proto  因为您想要Go代码，所以您使用--go_out选项——为其他受支持的语言提供了类似的选项。
+生成的代码我们指定放在本地文件夹中(--go_out=.)。
+生成的数据结构如下，它还包括一些辅助方法以及GetXXXX读取字段的方法:
+type SearchRequest struct { Query string `protobuf:&amp;quot;bytes,1,opt,name=query,proto3&amp;quot; json:&amp;quot;query,omitempty&amp;quot;` PageNumber int32 `protobuf:&amp;quot;varint,2,opt,name=page_number,json=pageNumber,proto3&amp;quot; json:&amp;quot;page_number,omitempty&amp;quot;` ResultPerPage int32 `protobuf:&amp;quot;varint,3,opt,name=result_per_page,json=resultPerPage,proto3&amp;quot; json:&amp;quot;result_per_page,omitempty&amp;quot;` XXX_NoUnkeyedLiteral struct{} `json:&amp;quot;-&amp;quot;` XXX_unrecognized []byte `json:&amp;quot;-&amp;quot;` XXX_sizecache int32 `json:&amp;quot;-&amp;quot;` } func (m *SearchRequest) Reset() { *m = SearchRequest{} } func (m *SearchRequest) String() string { return proto.</description>
     </item>
     
     <item>
       <title>RPC远程过程调用（1）</title>
-      <link>https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/</link>
+      <link>https://damon-zhangb.github.io/posts/rpc1/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/</guid>
+      <guid>https://damon-zhangb.github.io/posts/rpc1/</guid>
       <description>RPC远程过程调用（1） 简介 远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。
 通俗地说就是RPC调用远处的一个函数。远处到底有多远呢？可能是同一个文件内的不同函数，也可能是同一个机器的另一个进程的函数，还可能是远在火星好奇号上面的某个秘密方法。
 本章将讨论RPC的基本用法，如何针对不同场景设计自己的RPC服务。

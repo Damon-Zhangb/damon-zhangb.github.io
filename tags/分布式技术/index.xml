@@ -11,10 +11,10 @@
     <lastBuildDate>Mon, 01 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RPC远程过程调用（1）</title>
-      <link>https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/</link>
+      <link>https://damon-zhangb.github.io/posts/rpc1/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/rpc%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B/</guid>
+      <guid>https://damon-zhangb.github.io/posts/rpc1/</guid>
       <description>RPC远程过程调用（1） 简介 远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。
 通俗地说就是RPC调用远处的一个函数。远处到底有多远呢？可能是同一个文件内的不同函数，也可能是同一个机器的另一个进程的函数，还可能是远在火星好奇号上面的某个秘密方法。
 本章将讨论RPC的基本用法，如何针对不同场景设计自己的RPC服务。
