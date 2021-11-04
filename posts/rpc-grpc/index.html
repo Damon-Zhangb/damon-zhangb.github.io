@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width">
 
 
-<title>Go 每日一库之 Gin | DamonZhang🔥</title>
+<title>RPC --gRPC | DamonZhang🔥</title>
 
 <meta name="generator" content="Hugo Eureka 0.8.3" />
 <link rel="stylesheet" href="https://damon-zhangb.github.io/css/eureka.min.css">
@@ -59,7 +59,7 @@
 
 
 <meta name="description"
-  content="Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点">
+  content="gRPC是Google公司基于Protobuf开发的跨语言的开源RPC框架。gRPC基于HTTP/2协议设计，可以基于一个HTTP/2链接提供多个服务，对于移动设备更加友好。本文将讲述gRPC的简单用法。">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,8 +71,8 @@
       "item":"https://damon-zhangb.github.io/posts/"},{
       "@type": "ListItem",
       "position": 2 ,
-      "name":"Go 每日一库之 Gin",
-      "item":"https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/"}]
+      "name":"RPC --gRPC",
+      "item":"https://damon-zhangb.github.io/posts/rpc-grpc/"}]
 }
 </script>
 
@@ -84,11 +84,11 @@
     "@type": "Article",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/"
+        "@id": "https://damon-zhangb.github.io/posts/rpc-grpc/"
     },
-    "headline": "Go 每日一库之 Gin | DamonZhang🔥","datePublished": "2021-11-01T09:30:18+08:00",
-    "dateModified": "2021-11-01T09:30:18+08:00",
-    "wordCount":  42 ,
+    "headline": "RPC --gRPC | DamonZhang🔥","datePublished": "2021-11-02T10:40:18+08:00",
+    "dateModified": "2021-11-02T10:40:18+08:00",
+    "wordCount":  84 ,
     "author": {
         "@type": "Person",
         "name": "Me"
@@ -97,18 +97,18 @@
         "@type": "Person",
         "name": "Damon",
         },
-    "description": "Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点"
+    "description": "gRPC是Google公司基于Protobuf开发的跨语言的开源RPC框架。gRPC基于HTTP\/2协议设计，可以基于一个HTTP\/2链接提供多个服务，对于移动设备更加友好。本文将讲述gRPC的简单用法。"
 }
-</script><meta property="og:title" content="Go 每日一库之 Gin | DamonZhang🔥" />
+</script><meta property="og:title" content="RPC --gRPC | DamonZhang🔥" />
 <meta property="og:type" content="article" />
 
 
 
-<meta property="og:url" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/" />
+<meta property="og:url" content="https://damon-zhangb.github.io/posts/rpc-grpc/" />
 
 
 
-<meta property="og:description" content="Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点" />
+<meta property="og:description" content="gRPC是Google公司基于Protobuf开发的跨语言的开源RPC框架。gRPC基于HTTP/2协议设计，可以基于一个HTTP/2链接提供多个服务，对于移动设备更加友好。本文将讲述gRPC的简单用法。" />
 
 
 
@@ -124,17 +124,17 @@
 
 
 
-<meta property="article:published_time" content="2021-11-01T09:30:18&#43;08:00" />
+<meta property="article:published_time" content="2021-11-02T10:40:18&#43;08:00" />
 
 
-<meta property="article:modified_time" content="2021-11-01T09:30:18&#43;08:00" />
+<meta property="article:modified_time" content="2021-11-02T10:40:18&#43;08:00" />
 
 
 
 <meta property="article:section" content="posts" />
 
 
-<meta property="article:tag" content="Go" />
+<meta property="article:tag" content="分布式技术" />
 
 
 
@@ -144,13 +144,13 @@
 
 
 
-<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/" />
+
+
+<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/rpc-protobuf/" />
 
 
 
-<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/" />
-
-
+<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/" />
 
 
 
@@ -231,11 +231,11 @@
 <div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
     <div
         class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
-        <h1 class="font-bold text-3xl text-primary-text">Go 每日一库之 Gin</h1>
+        <h1 class="font-bold text-3xl text-primary-text">RPC --gRPC</h1>
         <div class="flex flex-wrap flex-row items-center mt-2 text-tertiary-text">
     <div class="mr-6 my-2">
         <i class="fas fa-calendar mr-1"></i>
-        <span>2021-11-01</span>
+        <span>2021-11-02</span>
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
@@ -246,7 +246,7 @@
     <div class="mr-6 my-2">
         <i class="fas fa-folder mr-1"></i>
         
-        <a href="https://damon-zhangb.github.io/categories/go/" class="hover:text-eureka">Go</a>
+        <a href="https://damon-zhangb.github.io/categories/%E7%90%86%E8%AE%BA/" class="hover:text-eureka">理论</a>
         
     </div>
     
@@ -255,7 +255,7 @@
     <div class="mr-6 my-2">
         <i class="fas fa-th-list mr-1"></i>
         
-        <a href="https://damon-zhangb.github.io/series/%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93/" class="hover:text-eureka">每日一库</a>
+        <a href="https://damon-zhangb.github.io/series/rpc%E6%8A%80%E6%9C%AF/" class="hover:text-eureka">RPC技术</a>
         
     </div>
     
@@ -265,33 +265,48 @@
         
 
         <div class="content">
-            <h1 id="go-每日一库之-gin">Go 每日一库之 Gin</h1>
-<h2 id="1简介">1.简介</h2>
-<ul>
-<li>Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点</li>
-<li>对于golang而言，web框架的依赖要远比Python，Java之类的要小。自身的<code>net/http</code>足够简单，性能也非常不错</li>
-<li>借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范</li>
-</ul>
-<h3 id="hello-world">hello world</h3>
-<pre><code class="language-go">package main
+            <h1 id="grpc">gRpc</h1>
+<h2 id="grpc技术栈">grpc技术栈</h2>
+<p><em>Go语言的gRPC技术栈如图4-1所示：</em></p>
+<p><img src="/RPC/4.png" alt=""></p>
+<center>图4-1 gRPC技术栈</center>
+<p>最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。</p>
+<h2 id="grpc入门">gRPC入门</h2>
+<p>如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。现在我们将学习gRPC的用法。</p>
+<p><em>创建hello.proto文件，定义HelloService接口：</em></p>
+<pre><code class="language-protobuf">syntax = &quot;proto3&quot;;
 
-import (
-    &quot;net/http&quot;
+package main;
 
-    &quot;github.com/gin-gonic/gin&quot;
-)
+message String {
+    string value = 1;
+}
 
-func main() {
-    // 1.创建路由
-   r := gin.Default()
-   // 2.绑定路由规则，执行的函数
-   // gin.Context，封装了request和response
-   r.GET(&quot;/&quot;, func(c *gin.Context) {
-      c.String(http.StatusOK, &quot;hello World!&quot;)
-   })
-   // 3.监听端口，默认在8080
-   // Run(&quot;里面不指定端口号默认为8080&quot;) 
-   r.Run(&quot;:8000&quot;)
+service HelloService {
+    rpc Hello (String) returns (String);
+}
+</code></pre>
+<p><em>使用protoc-gen-go内置的gRPC插件生成gRPC代码：</em></p>
+<pre><code class="language-sh">$ protoc --go_out=plugins=grpc:. hello.proto
+</code></pre>
+<p><em>gRPC插件会为服务端和客户端生成不同的接口：</em></p>
+<pre><code class="language-go">type HelloServiceServer interface {
+    Hello(context.Context, *String) (*String, error)
+}
+
+type HelloServiceClient interface {
+    Hello(context.Context, *String, ...grpc.CallOption) (*String, error)
+}
+</code></pre>
+<p>gRPC通过<strong>context.Context</strong>参数，为每个方法调用提供了上下文支持。客户端在调用方法的时候，可以通过可选的<strong>grpc.CallOption</strong>类型的参数提供额外的上下文信息。</p>
+<p>基于服务端的<strong>HelloServiceServer</strong>接口可以重新实现<strong>HelloService</strong>服务：</p>
+<pre><code class="language-go">type HelloServiceImpl struct{}
+
+func (p *HelloServiceImpl) Hello(
+    ctx context.Context, args *String,
+) (*String, error) {
+    reply := &amp;String{Value: &quot;hello:&quot; + args.GetValue()}
+    return reply, nil
 }
 </code></pre>
 
@@ -299,7 +314,7 @@ func main() {
         
         <div class="my-4">
     
-    <a href="https://damon-zhangb.github.io/tags/go/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#Go</a>
+    <a href="https://damon-zhangb.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#分布式技术</a>
     
 </div>
         
@@ -365,10 +380,13 @@ func main() {
     <div>
         
         <span class="block font-bold">上一页</span>
-        <a href="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/" class="block">RPC --入门</a>
+        <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/" class="block">Go 每日一库之 logrus</a>
         
     </div>
     <div class="md:text-right mt-4 md:mt-0">
+        
+        <span class="block font-bold">下一页</span>
+        <a href="https://damon-zhangb.github.io/posts/rpc-protobuf/" class="block">RPC --ProtoBuf</a>
         
     </div>
 </div>
@@ -387,13 +405,13 @@ func main() {
     <div class="content">
         
         
-        <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/">Go 每日一库之 cron</a>
+        <a href="https://damon-zhangb.github.io/posts/rpc-grpc/">RPC --gRPC</a>
         <br />
         
-        <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/">Go 每日一库之 logrus</a>
+        <a href="https://damon-zhangb.github.io/posts/rpc-protobuf/">RPC --ProtoBuf</a>
         <br />
         
-        <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/">Go 每日一库之 Gin</a>
+        <a href="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/">RPC --入门</a>
         <br />
         
         
@@ -407,11 +425,8 @@ func main() {
 <div class="sticky-toc hidden lg:block px-6 pb-6 ">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#1简介">1.简介</a>
-      <ul>
-        <li><a href="#hello-world">hello world</a></li>
-      </ul>
-    </li>
+    <li><a href="#grpc技术栈">grpc技术栈</a></li>
+    <li><a href="#grpc入门">gRPC入门</a></li>
   </ul>
 </nav>
 </div>
@@ -425,6 +440,17 @@ func main() {
     
 
     
+    
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded p-6">
+        <h2 class="text-lg font-semibold mb-4">相关</h2>
+        <div class="content">
+            
+            <a href="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/">RPC --入门</a>
+            <br />
+            
+        </div>
+    </div>
     
 </div>
 <script>

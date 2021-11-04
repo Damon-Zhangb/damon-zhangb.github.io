@@ -8,13 +8,30 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Mon, 01 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 02 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>ProtoBuf序列化协议</title>
-      <link>https://damon-zhangb.github.io/posts/protobuf/</link>
+      <title>RPC --gRPC</title>
+      <link>https://damon-zhangb.github.io/posts/rpc-grpc/</link>
+      <pubDate>Tue, 02 Nov 2021 10:40:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rpc-grpc/</guid>
+      <description>gRpc grpc技术栈 Go语言的gRPC技术栈如图4-1所示：
+图4-1 gRPC技术栈 最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。
+gRPC入门 如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。现在我们将学习gRPC的用法。
+创建hello.proto文件，定义HelloService接口：
+syntax = &amp;quot;proto3&amp;quot;; package main; message String { string value = 1; } service HelloService { rpc Hello (String) returns (String); }  使用protoc-gen-go内置的gRPC插件生成gRPC代码：
+$ protoc --go_out=plugins=grpc:. hello.proto  gRPC插件会为服务端和客户端生成不同的接口：
+type HelloServiceServer interface { Hello(context.Context, *String) (*String, error) } type HelloServiceClient interface { Hello(context.Context, *String, ...grpc.CallOption) (*String, error) }  gRPC通过context.Context参数，为每个方法调用提供了上下文支持。客户端在调用方法的时候，可以通过可选的grpc.CallOption类型的参数提供额外的上下文信息。
+基于服务端的HelloServiceServer接口可以重新实现HelloService服务：
+type HelloServiceImpl struct{} func (p *HelloServiceImpl) Hello( ctx context.Context, args *String, ) (*String, error) { reply := &amp;amp;String{Value: &amp;quot;hello:&amp;quot; + args.</description>
+    </item>
+    
+    <item>
+      <title>RPC --ProtoBuf</title>
+      <link>https://damon-zhangb.github.io/posts/rpc-protobuf/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/protobuf/</guid>
+      <guid>https://damon-zhangb.github.io/posts/rpc-protobuf/</guid>
       <description>ProtoBuf序列化协议 简介 由于RPC远程调用涉及的函数可能非常之远，远到它们之间说着完全不同的语言，语言就成了两边的沟通障碍。而Protobuf因为支持多种不同的语言（甚至不支持的语言也可以扩展支持），其本身特性也非常方便描述服务的接口（也就是方法列表），因此非常适合作为RPC世界的接口交流语言。
 Protocol Buffers（简称：ProtoBuf）是一种序列化数据结构的协议。对于透过管道(pipeline)或存储资料进行通信的程序开发上是很有用的。这个方法包含一个接口描述语言，描述一些数据结构，并提供程序工具根据这些描述产生代码，用于将这些数据结构产生或解析资料流。
 序列化 **序列化(serialization、marshalling)的过程是指将数据结构或者对象的状态转换成可以存储(比如文件、内存)或者传输的格式(比如网络)。反向操作就是反序列化(deserialization、unmarshalling)**的过程。
@@ -34,12 +51,12 @@ type SearchRequest struct { Query string `protobuf:&amp;quot;bytes,1,opt,name=qu
     </item>
     
     <item>
-      <title>RPC远程过程调用（1）</title>
-      <link>https://damon-zhangb.github.io/posts/rpc1/</link>
+      <title>RPC --入门</title>
+      <link>https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/rpc1/</guid>
-      <description>RPC远程过程调用（1） 简介 远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。
+      <guid>https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/</guid>
+      <description>RPC远程过程调用 简介 远程过程调用（Remote Procedure Call，缩写为 RPC）是一个计算机通信协议。该协议允许运行于一台计算机的程序调用另一台计算机的子程序，而程序员无需额外地为这个交互作用编程。
 通俗地说就是RPC调用远处的一个函数。远处到底有多远呢？可能是同一个文件内的不同函数，也可能是同一个机器的另一个进程的函数，还可能是远在火星好奇号上面的某个秘密方法。
 本章将讨论RPC的基本用法，如何针对不同场景设计自己的RPC服务。
 理论 在一个典型 RPC 的使用场景中，包含了服务发现、负载、容错、网络传输、序列化等组件，其中“RPC 协议”就指明了程序如何进行网络传输和序列化。

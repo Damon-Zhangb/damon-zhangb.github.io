@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width">
 
 
-<title>Go 每日一库之 Gin | DamonZhang🔥</title>
+<title>Go 每日一库之 logrus | DamonZhang🔥</title>
 
 <meta name="generator" content="Hugo Eureka 0.8.3" />
 <link rel="stylesheet" href="https://damon-zhangb.github.io/css/eureka.min.css">
@@ -59,7 +59,7 @@
 
 
 <meta name="description"
-  content="Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点">
+  content="今天，我们来介绍一个日志库中的“明星库”——logrus。logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,8 +71,8 @@
       "item":"https://damon-zhangb.github.io/posts/"},{
       "@type": "ListItem",
       "position": 2 ,
-      "name":"Go 每日一库之 Gin",
-      "item":"https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/"}]
+      "name":"Go 每日一库之 logrus",
+      "item":"https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/"}]
 }
 </script>
 
@@ -84,11 +84,11 @@
     "@type": "Article",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/"
+        "@id": "https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/"
     },
-    "headline": "Go 每日一库之 Gin | DamonZhang🔥","datePublished": "2021-11-01T09:30:18+08:00",
-    "dateModified": "2021-11-01T09:30:18+08:00",
-    "wordCount":  42 ,
+    "headline": "Go 每日一库之 logrus | DamonZhang🔥","datePublished": "2021-11-04T09:30:18+08:00",
+    "dateModified": "2021-11-04T09:30:18+08:00",
+    "wordCount":  237 ,
     "author": {
         "@type": "Person",
         "name": "Me"
@@ -97,18 +97,18 @@
         "@type": "Person",
         "name": "Damon",
         },
-    "description": "Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点"
+    "description": "今天，我们来介绍一个日志库中的“明星库”——logrus。logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。"
 }
-</script><meta property="og:title" content="Go 每日一库之 Gin | DamonZhang🔥" />
+</script><meta property="og:title" content="Go 每日一库之 logrus | DamonZhang🔥" />
 <meta property="og:type" content="article" />
 
 
 
-<meta property="og:url" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/" />
+<meta property="og:url" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/" />
 
 
 
-<meta property="og:description" content="Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点" />
+<meta property="og:description" content="今天，我们来介绍一个日志库中的“明星库”——logrus。logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。" />
 
 
 
@@ -124,10 +124,10 @@
 
 
 
-<meta property="article:published_time" content="2021-11-01T09:30:18&#43;08:00" />
+<meta property="article:published_time" content="2021-11-04T09:30:18&#43;08:00" />
 
 
-<meta property="article:modified_time" content="2021-11-01T09:30:18&#43;08:00" />
+<meta property="article:modified_time" content="2021-11-04T09:30:18&#43;08:00" />
 
 
 
@@ -148,9 +148,9 @@
 
 
 
-<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/" />
 
 
+<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/" />
 
 
 
@@ -231,15 +231,15 @@
 <div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
     <div
         class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
-        <h1 class="font-bold text-3xl text-primary-text">Go 每日一库之 Gin</h1>
+        <h1 class="font-bold text-3xl text-primary-text">Go 每日一库之 logrus</h1>
         <div class="flex flex-wrap flex-row items-center mt-2 text-tertiary-text">
     <div class="mr-6 my-2">
         <i class="fas fa-calendar mr-1"></i>
-        <span>2021-11-01</span>
+        <span>2021-11-04</span>
     </div>
     <div class="mr-6 my-2">
         <i class="fas fa-clock mr-1"></i>
-        <span>1分钟阅读时长</span>
+        <span>2分钟阅读时长</span>
     </div>
     
     
@@ -265,33 +265,165 @@
         
 
         <div class="content">
-            <h1 id="go-每日一库之-gin">Go 每日一库之 Gin</h1>
-<h2 id="1简介">1.简介</h2>
-<ul>
-<li>Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点</li>
-<li>对于golang而言，web框架的依赖要远比Python，Java之类的要小。自身的<code>net/http</code>足够简单，性能也非常不错</li>
-<li>借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范</li>
-</ul>
-<h3 id="hello-world">hello world</h3>
-<pre><code class="language-go">package main
+            <h1 id="go-每日一库之-logrus">Go 每日一库之 logrus</h1>
+<h2 id="简介">简介</h2>
+<p><code>log</code>库只提供了三组接口，功能过于简单了。 今天，我们来介绍一个日志库中的“明星库”——<code>logrus</code>。 <code>logrus</code>完全兼容标准的<code>log</code>库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。</p>
+<h2 id="helloworld">helloworld</h2>
+<p>第三方库需要先安装：</p>
+<pre><code class="language-sh">$ go get github.com/sirupsen/logrus
+</code></pre>
+<p>后使用：</p>
+<pre><code class="language-golang">package main
 
 import (
-    &quot;net/http&quot;
-
-    &quot;github.com/gin-gonic/gin&quot;
+  &quot;github.com/sirupsen/logrus&quot;
 )
 
 func main() {
-    // 1.创建路由
-   r := gin.Default()
-   // 2.绑定路由规则，执行的函数
-   // gin.Context，封装了request和response
-   r.GET(&quot;/&quot;, func(c *gin.Context) {
-      c.String(http.StatusOK, &quot;hello World!&quot;)
-   })
-   // 3.监听端口，默认在8080
-   // Run(&quot;里面不指定端口号默认为8080&quot;) 
-   r.Run(&quot;:8000&quot;)
+  logrus.SetLevel(logrus.TraceLevel)
+
+  logrus.Trace(&quot;trace msg&quot;)
+  logrus.Debug(&quot;debug msg&quot;)
+  logrus.Info(&quot;info msg&quot;)
+  logrus.Warn(&quot;warn msg&quot;)
+  logrus.Error(&quot;error msg&quot;)
+  logrus.Fatal(&quot;fatal msg&quot;)
+  logrus.Panic(&quot;panic msg&quot;)
+}
+</code></pre>
+<p><code>logrus</code>的使用非常简单，与标准库<code>log</code>类似。<code>logrus</code>支持更多的日志级别：</p>
+<ul>
+<li><code>Panic</code>：记录日志，然后<code>panic</code>。</li>
+<li><code>Fatal</code>：致命错误，出现错误时程序无法正常运转。输出日志后，程序退出；</li>
+<li><code>Error</code>：错误日志，需要查看原因；</li>
+<li><code>Warn</code>：警告信息，提醒程序员注意；</li>
+<li><code>Info</code>：关键操作，核心流程的日志；</li>
+<li><code>Debug</code>：一般程序中输出的调试信息；</li>
+<li><code>Trace</code>：很细粒度的信息，一般用不到；</li>
+</ul>
+<p>日志级别从上向下依次增加，<code>Trace</code>最大，<code>Panic</code>最小。<code>logrus</code>有一个日志级别，高于这个级别的日志不会输出。 默认的级别为<code>InfoLevel</code>。所以为了能看到<code>Trace</code>和<code>Debug</code>日志，我们在<code>main</code>函数第一行设置日志级别为<code>TraceLevel</code>。</p>
+<h2 id="定制">定制</h2>
+<h3 id="输出文件名">输出文件名</h3>
+<p>调用<code>logrus.SetReportCaller(true)</code>设置在输出日志中添加文件名和方法信息：</p>
+<pre><code class="language-golang">package main
+
+import (
+  &quot;github.com/sirupsen/logrus&quot;
+)
+
+func main() {
+  logrus.SetReportCaller(true)
+
+  logrus.Info(&quot;info msg&quot;)
+}
+</code></pre>
+<p>输出多了两个字段<code>file</code>为调用<code>logrus</code>相关方法的文件名，<code>method</code>为方法名：</p>
+<pre><code class="language-sh">$ go run main.go
+time=&quot;2020-02-07T21:46:03+08:00&quot; level=info msg=&quot;info msg&quot; func=main.main file=&quot;D:/code/golang/src/github.com/darjun/go-daily-lib/logrus/caller/main.go:10&quot;
+</code></pre>
+<h3 id="添加字段">添加字段</h3>
+<p>有时候需要在输出中添加一些字段，可以通过调用<code>logrus.WithField</code>和<code>logrus.WithFields</code>实现。 <code>logrus.WithFields</code>接受一个<code>logrus.Fields</code>类型的参数，其底层实际上为<code>map[string]interface{}</code>：</p>
+<pre><code class="language-golang">// github.com/sirupsen/logrus/logrus.go
+type Fields map[string]interface{}
+</code></pre>
+<p>下面程序在输出中添加两个字段<code>name</code>和<code>age</code>：</p>
+<pre><code class="language-golang">package main
+
+import (
+  &quot;github.com/sirupsen/logrus&quot;
+)
+
+func main() {
+  logrus.WithFields(logrus.Fields{
+    &quot;name&quot;: &quot;dj&quot;,
+    &quot;age&quot;: 18,
+  }).Info(&quot;info msg&quot;)
+}
+</code></pre>
+<p>如果在一个函数中的所有日志都需要添加某些字段，可以使用<code>WithFields</code>的返回值。例如在 Web 请求的处理器中，日志都要加上<code>user_id</code>和<code>ip</code>字段：</p>
+<pre><code class="language-golang">package main
+
+import (
+  &quot;github.com/sirupsen/logrus&quot;
+)
+
+func main() {
+  requestLogger := logrus.WithFields(logrus.Fields{
+    &quot;user_id&quot;: 10010,
+    &quot;ip&quot;:      &quot;192.168.32.15&quot;,
+  })
+
+  requestLogger.Info(&quot;info msg&quot;)
+  requestLogger.Error(&quot;error msg&quot;)
+}
+</code></pre>
+<p>实际上，<code>WithFields</code>返回一个<code>logrus.Entry</code>类型的值，它将<code>logrus.Logger</code>和设置的<code>logrus.Fields</code>保存下来。 调用<code>Entry</code>相关方法输出日志时，保存下来的<code>logrus.Fields</code>也会随之输出。</p>
+<h3 id="重定向输出">重定向输出</h3>
+<p>默认情况下，日志输出到<code>io.Stderr</code>。可以调用<code>logrus.SetOutput</code>传入一个<code>io.Writer</code>参数。后续调用相关方法日志将写到<code>io.Writer</code>中。 现在，我们就能像上篇文章介绍<a href="https://darjun.github.io/2020/02/07/godailylib/log/">log</a>时一样，可以搞点事情了。传入一个<code>io.MultiWriter</code>， 同时将日志写到<code>bytes.Buffer</code>、标准输出和文件中：</p>
+<pre><code class="language-golang">package main
+
+import (
+  &quot;bytes&quot;
+  &quot;io&quot;
+  &quot;log&quot;
+  &quot;os&quot;
+
+  &quot;github.com/sirupsen/logrus&quot;
+)
+
+func main() {
+  writer1 := &amp;bytes.Buffer{}
+  writer2 := os.Stdout
+  writer3, err := os.OpenFile(&quot;log.txt&quot;, os.O_WRONLY|os.O_CREATE, 0755)
+  if err != nil {
+    log.Fatalf(&quot;create file log.txt failed: %v&quot;, err)
+  }
+
+  logrus.SetOutput(io.MultiWriter(writer1, writer2, writer3))
+  logrus.Info(&quot;info msg&quot;)
+}
+</code></pre>
+<h3 id="自定义">自定义</h3>
+<p><strong>实际上，考虑到易用性，库一般会使用默认值创建一个对象，包最外层的方法一般都是操作这个默认对象。</strong></p>
+<p>这个技巧应用在很多库的开发中，<code>logrus</code>也是如此：</p>
+<pre><code class="language-golang">// github.com/sirupsen/logrus/exported.go
+var (
+  std = New()
+)
+
+func StandardLogger() *Logger {
+  return std
+}
+
+func SetOutput(out io.Writer) {
+  std.SetOutput(out)
+}
+
+func SetFormatter(formatter Formatter) {
+  std.SetFormatter(formatter)
+}
+
+func SetReportCaller(include bool) {
+  std.SetReportCaller(include)
+}
+
+func SetLevel(level Level) {
+  std.SetLevel(level)
+}
+</code></pre>
+<p>首先，使用默认配置定义一个<code>Logger</code>对象<code>std</code>，<code>SetOutput/SetFormatter/SetReportCaller/SetLevel</code>这些方法都是调用<code>std</code>对象的对应方法！</p>
+<p>我们当然也可以创建自己的<code>Logger</code>对象，使用方式与直接调用<code>logrus</code>的方法类似：</p>
+<pre><code class="language-golang">package main
+
+import &quot;github.com/sirupsen/logrus&quot;
+
+func main() {
+  log := logrus.New()
+
+  log.SetLevel(logrus.InfoLevel)
+  log.SetFormatter(&amp;logrus.JSONFormatter{})
+
+  log.Info(&quot;info msg&quot;)
 }
 </code></pre>
 
@@ -365,10 +497,13 @@ func main() {
     <div>
         
         <span class="block font-bold">上一页</span>
-        <a href="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/" class="block">RPC --入门</a>
+        <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/" class="block">Go 每日一库之 cron</a>
         
     </div>
     <div class="md:text-right mt-4 md:mt-0">
+        
+        <span class="block font-bold">下一页</span>
+        <a href="https://damon-zhangb.github.io/posts/rpc-grpc/" class="block">RPC --gRPC</a>
         
     </div>
 </div>
@@ -407,9 +542,14 @@ func main() {
 <div class="sticky-toc hidden lg:block px-6 pb-6 ">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#1简介">1.简介</a>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#helloworld">helloworld</a></li>
+    <li><a href="#定制">定制</a>
       <ul>
-        <li><a href="#hello-world">hello world</a></li>
+        <li><a href="#输出文件名">输出文件名</a></li>
+        <li><a href="#添加字段">添加字段</a></li>
+        <li><a href="#重定向输出">重定向输出</a></li>
+        <li><a href="#自定义">自定义</a></li>
       </ul>
     </li>
   </ul>
@@ -425,6 +565,20 @@ func main() {
     
 
     
+    
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded p-6">
+        <h2 class="text-lg font-semibold mb-4">相关</h2>
+        <div class="content">
+            
+            <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/">Go 每日一库之 cron</a>
+            <br />
+            
+            <a href="https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/">Go 每日一库之 Gin</a>
+            <br />
+            
+        </div>
+    </div>
     
 </div>
 <script>

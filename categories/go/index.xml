@@ -8,7 +8,40 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Mon, 01 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 04 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go 每日一库之 cron</title>
+      <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/</link>
+      <pubDate>Thu, 04 Nov 2021 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/</guid>
+      <description>Go 每日一库之 cron 简介 cron一个用于管理定时任务的库，用 Go 实现 Linux 中crontab这个命令的效果。之前我们也介绍过一个类似的 Go 库——gron。gron代码小巧，用于学习是比较好的。但是它功能相对简单些，并且已经不维护了。如果有定时任务需求，还是建议使用cron。
+HelloWorld 安装cron，目前最新稳定版本为 v3：
+$ go get -u github.com/robfig/cron/v3  使用：
+package main import ( &amp;quot;fmt&amp;quot; &amp;quot;time&amp;quot; &amp;quot;github.com/robfig/cron/v3&amp;quot; ) func main() { c := cron.New() c.AddFunc(&amp;quot;@every 1s&amp;quot;, func() { fmt.Println(&amp;quot;tick every 1 second&amp;quot;) }) c.Start() time.Sleep(time.Second * 5) }  使用非常简单，创建cron对象，这个对象用于管理定时任务。
+调用cron对象的AddFunc()方法向管理器中添加定时任务。AddFunc()接受两个参数，参数 1 以字符串形式指定触发时间规则，参数 2 是一个无参的函数，每次触发时调用。@every 1s表示每秒触发一次，@every后加一个时间间隔，表示每隔多长时间触发一次。例如@every 1h表示每小时触发一次，@every 1m2s表示每隔 1 分 2 秒触发一次。time.ParseDuration()支持的格式都可以用在这里。
+调用c.Start()启动定时循环。
+注意一点，因为c.Start()启动一个新的 goroutine 做循环检测，我们在代码最后加了一行time.Sleep(time.Second * 5)防止主 goroutine 退出。
+运行效果，每隔 1s 输出一行字符串：
+$ go run main.</description>
+    </item>
+    
+    <item>
+      <title>Go 每日一库之 logrus</title>
+      <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/</link>
+      <pubDate>Thu, 04 Nov 2021 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/</guid>
+      <description>Go 每日一库之 logrus 简介 log库只提供了三组接口，功能过于简单了。 今天，我们来介绍一个日志库中的“明星库”——logrus。 logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。
+helloworld 第三方库需要先安装：
+$ go get github.com/sirupsen/logrus  后使用：
+package main import ( &amp;quot;github.com/sirupsen/logrus&amp;quot; ) func main() { logrus.SetLevel(logrus.TraceLevel) logrus.Trace(&amp;quot;trace msg&amp;quot;) logrus.Debug(&amp;quot;debug msg&amp;quot;) logrus.Info(&amp;quot;info msg&amp;quot;) logrus.Warn(&amp;quot;warn msg&amp;quot;) logrus.Error(&amp;quot;error msg&amp;quot;) logrus.Fatal(&amp;quot;fatal msg&amp;quot;) logrus.Panic(&amp;quot;panic msg&amp;quot;) }  logrus的使用非常简单，与标准库log类似。logrus支持更多的日志级别：
+ Panic：记录日志，然后panic。 Fatal：致命错误，出现错误时程序无法正常运转。输出日志后，程序退出； Error：错误日志，需要查看原因； Warn：警告信息，提醒程序员注意； Info：关键操作，核心流程的日志； Debug：一般程序中输出的调试信息； Trace：很细粒度的信息，一般用不到；  日志级别从上向下依次增加，Trace最大，Panic最小。logrus有一个日志级别，高于这个级别的日志不会输出。 默认的级别为InfoLevel。所以为了能看到Trace和Debug日志，我们在main函数第一行设置日志级别为TraceLevel。
+定制 输出文件名 调用logrus.SetReportCaller(true)设置在输出日志中添加文件名和方法信息：
+package main import ( &amp;quot;github.com/sirupsen/logrus&amp;quot; ) func main() { logrus.SetReportCaller(true) logrus.Info(&amp;quot;info msg&amp;quot;) }  输出多了两个字段file为调用logrus相关方法的文件名，method为方法名：
+$ go run main.</description>
+    </item>
+    
     <item>
       <title>Go 每日一库之 Gin</title>
       <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/</link>
