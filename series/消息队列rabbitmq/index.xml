@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>消息队列RabbitMQ on DamonZhang🔥</title>
+    <link>https://damon-zhangb.github.io/series/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97rabbitmq/</link>
+    <description>Recent content in 消息队列RabbitMQ on DamonZhang🔥</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
+</copyright>
+    <lastBuildDate>Mon, 08 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/series/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97rabbitmq/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RabbitMQ（1）</title>
+      <link>https://damon-zhangb.github.io/posts/rabbitmq/</link>
+      <pubDate>Mon, 08 Nov 2021 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rabbitmq/</guid>
+      <description>rabbitmq（1） hello world 介绍 RabbitMQ 是一个消息代理：它接受和转发消息。你可以将其视为邮局：当你将要投递的邮件放入邮箱时，你可以确定信件承运人最终会将邮件递送给您的收件人。在这个比喻中，RabbitMQ 是一个邮箱、一个邮局和一个信件载体。
+RabbitMQ 和邮局之间的主要区别在于它不处理信件内容，而是接受、存储和转发二进制数据 blob消息。
+RabbitMQ 和一般的消息传递使用了一些行话：
+  生产无非就是发送。发送消息的程序是生产者：
+  队列是位于 RabbitMQ 中的邮箱的名称。尽管消息流经 RabbitMQ 和您的应用程序，但它们只能存储在队列中。甲队列仅由主机的存储器＆磁盘限制约束，它本质上是一个大的消息缓冲器。许多生产者可以将消息发送到一个队列，许多消费者可以尝试从一个队列接收数据。这是我们表示队列的方式：
+  消费与接收具有相似的含义。一个消费者是一个程序，主要是等待接收信息：
+  请注意，生产者、消费者和代理不必驻留在同一主机上；实际上，在大多数应用程序中它们没有。应用程序也可以既是生产者又是消费者。
+Hello World 在这一小节中，我们将用 Go 编写两个小程序；发送单个消息的生产者和接收消息并将其打印出来的消费者。
+在下图中，“P”是我们的生产者，“C”是我们的消费者。中间的盒子是一个队列——RabbitMQ 代表消费者保留的消息缓冲区。
+ Go RabbitMQ 客户端库 RabbitMQ 使用多种协议。本教程使用 AMQP 0-9-1，这是一种用于消息传递的开放式通用协议。RabbitMQ 有许多不同语言的客户端。我们将在本教程中使用 Go amqp 客户端。
+首先，使用go get安装 amqp ：
+go get github.com/streadway/amqp   现在我们已经安装了 amqp，我们可以编写一些代码。
+发送 我们将调用我们的消息发布者（发送者）send.go和我们的消息消费者（接收者） receive.go。发布者将连接到 RabbitMQ，发送一条消息，然后退出。
+在 send.go 中，我们需要先导入库:
+package main import ( &amp;quot;log&amp;quot; &amp;quot;github.com/streadway/amqp&amp;quot; )  我们还需要一个辅助函数来检查每个 amqp 调用的返回值：</description>
+    </item>
+    
+  </channel>
+</rss>

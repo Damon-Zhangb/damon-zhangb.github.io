@@ -8,28 +8,11 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Tue, 02 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/series/rpc%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>RPC --gRPC</title>
-      <link>https://damon-zhangb.github.io/posts/rpc-grpc/</link>
-      <pubDate>Tue, 02 Nov 2021 10:40:18 +0800</pubDate>
-      
-      <guid>https://damon-zhangb.github.io/posts/rpc-grpc/</guid>
-      <description>gRpc grpc技术栈 Go语言的gRPC技术栈如图4-1所示：
-图4-1 gRPC技术栈 最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。
-gRPC入门 如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。现在我们将学习gRPC的用法。
-创建hello.proto文件，定义HelloService接口：
-syntax = &amp;quot;proto3&amp;quot;; package main; message String { string value = 1; } service HelloService { rpc Hello (String) returns (String); }  使用protoc-gen-go内置的gRPC插件生成gRPC代码：
-$ protoc --go_out=plugins=grpc:. hello.proto  gRPC插件会为服务端和客户端生成不同的接口：
-type HelloServiceServer interface { Hello(context.Context, *String) (*String, error) } type HelloServiceClient interface { Hello(context.Context, *String, ...grpc.CallOption) (*String, error) }  gRPC通过context.Context参数，为每个方法调用提供了上下文支持。客户端在调用方法的时候，可以通过可选的grpc.CallOption类型的参数提供额外的上下文信息。
-基于服务端的HelloServiceServer接口可以重新实现HelloService服务：
-type HelloServiceImpl struct{} func (p *HelloServiceImpl) Hello( ctx context.Context, args *String, ) (*String, error) { reply := &amp;amp;String{Value: &amp;quot;hello:&amp;quot; + args.</description>
-    </item>
-    
+    <lastBuildDate>Wed, 03 Nov 2021 10:40:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/series/rpc%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RPC --ProtoBuf</title>
       <link>https://damon-zhangb.github.io/posts/rpc-protobuf/</link>
-      <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
+      <pubDate>Wed, 03 Nov 2021 10:40:18 +0800</pubDate>
       
       <guid>https://damon-zhangb.github.io/posts/rpc-protobuf/</guid>
       <description>ProtoBuf序列化协议 简介 由于RPC远程调用涉及的函数可能非常之远，远到它们之间说着完全不同的语言，语言就成了两边的沟通障碍。而Protobuf因为支持多种不同的语言（甚至不支持的语言也可以扩展支持），其本身特性也非常方便描述服务的接口（也就是方法列表），因此非常适合作为RPC世界的接口交流语言。
@@ -48,6 +31,23 @@ protoc -I=$SRC_DIR --go_out=$DST_DIR $SRC_DIR/addressbook.proto  因为您想要
 生成的代码我们指定放在本地文件夹中(--go_out=.)。
 生成的数据结构如下，它还包括一些辅助方法以及GetXXXX读取字段的方法:
 type SearchRequest struct { Query string `protobuf:&amp;quot;bytes,1,opt,name=query,proto3&amp;quot; json:&amp;quot;query,omitempty&amp;quot;` PageNumber int32 `protobuf:&amp;quot;varint,2,opt,name=page_number,json=pageNumber,proto3&amp;quot; json:&amp;quot;page_number,omitempty&amp;quot;` ResultPerPage int32 `protobuf:&amp;quot;varint,3,opt,name=result_per_page,json=resultPerPage,proto3&amp;quot; json:&amp;quot;result_per_page,omitempty&amp;quot;` XXX_NoUnkeyedLiteral struct{} `json:&amp;quot;-&amp;quot;` XXX_unrecognized []byte `json:&amp;quot;-&amp;quot;` XXX_sizecache int32 `json:&amp;quot;-&amp;quot;` } func (m *SearchRequest) Reset() { *m = SearchRequest{} } func (m *SearchRequest) String() string { return proto.</description>
+    </item>
+    
+    <item>
+      <title>RPC --gRPC</title>
+      <link>https://damon-zhangb.github.io/posts/rpc-grpc/</link>
+      <pubDate>Tue, 02 Nov 2021 10:40:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rpc-grpc/</guid>
+      <description>gRpc grpc技术栈 Go语言的gRPC技术栈如图4-1所示：
+图4-1 gRPC技术栈 最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。
+gRPC入门 如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。现在我们将学习gRPC的用法。
+创建hello.proto文件，定义HelloService接口：
+syntax = &amp;quot;proto3&amp;quot;; package main; message String { string value = 1; } service HelloService { rpc Hello (String) returns (String); }  使用protoc-gen-go内置的gRPC插件生成gRPC代码：
+$ protoc --go_out=plugins=grpc:. hello.proto  gRPC插件会为服务端和客户端生成不同的接口：
+type HelloServiceServer interface { Hello(context.Context, *String) (*String, error) } type HelloServiceClient interface { Hello(context.Context, *String, ...grpc.CallOption) (*String, error) }  gRPC通过context.Context参数，为每个方法调用提供了上下文支持。客户端在调用方法的时候，可以通过可选的grpc.CallOption类型的参数提供额外的上下文信息。
+基于服务端的HelloServiceServer接口可以重新实现HelloService服务：
+type HelloServiceImpl struct{} func (p *HelloServiceImpl) Hello( ctx context.Context, args *String, ) (*String, error) { reply := &amp;amp;String{Value: &amp;quot;hello:&amp;quot; + args.</description>
     </item>
     
     <item>
