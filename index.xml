@@ -8,11 +8,11 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Wed, 06 Apr 2022 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 09 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RabbitMQ（2）</title>
       <link>https://damon-zhangb.github.io/posts/rabbitmq2/</link>
-      <pubDate>Wed, 06 Apr 2022 09:30:18 +0800</pubDate>
+      <pubDate>Tue, 09 Nov 2021 09:30:18 +0800</pubDate>
       
       <guid>https://damon-zhangb.github.io/posts/rabbitmq2/</guid>
       <description>发布/订阅 在上一篇中，我们搭建了一个工作队列，每个任务只分发给一个工作者（worker）。在本篇教程中，我们要做的跟之前完全不一样 —— 分发一个消息给多个消费者（consumers）。这种模式被称为**“发布／订阅”。**
