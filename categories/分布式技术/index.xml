@@ -8,7 +8,28 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Mon, 08 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RabbitMQ（2）</title>
+      <link>https://damon-zhangb.github.io/posts/rabbitmq2/</link>
+      <pubDate>Wed, 06 Apr 2022 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rabbitmq2/</guid>
+      <description>发布/订阅 在上一篇中，我们搭建了一个工作队列，每个任务只分发给一个工作者（worker）。在本篇教程中，我们要做的跟之前完全不一样 —— 分发一个消息给多个消费者（consumers）。这种模式被称为**“发布／订阅”。**
+为了描述这种模式，我们将会构建一个简单的日志系统。它包括两个程序——第一个程序负责发送日志消息，第二个程序负责获取消息并输出内容。
+在我们的这个日志系统中，所有正在运行的接收方程序都会接受消息。我们用其中一个接收者（receiver）把日志写入硬盘中，另外一个接受者（receiver）把日志输出到屏幕上。
+最终，日志消息被广播给所有的接受者（receivers）。
+交换机（Exchanges） 前面的教程中，我们发送消息到队列并从中取出消息。现在是时候介绍RabbitMQ中完整的消息模型了。
+让我们简单的概括一下之前的教程：
+ 发布者（producer）是发布消息的应用程序。 队列（queue）用于消息存储的缓冲。 消费者（consumer）是接收消息的应用程序。  RabbitMQ消息模型的核心理念是：发布者（producer）不会直接发送任何消息给队列。事实上，发布者（producer）甚至不知道消息是否已经被投递到队列。
+发布者（producer）只需要把消息发送给一个交换机（exchange）。交换机非常简单，它一边从发布者方接收消息，一边把消息推送到队列。交换机必须知道如何处理它接收到的消息，是应该推送到指定的队列还是是多个队列，或者是直接忽略消息。这些规则是通过交换机类型（exchange type）来定义的。
+有几个可供选择的交换机类型：direct, topic, headers和fanout。我们在这里主要说明最后一个 —— fanout。先创建一个fanout类型的交换机，命名为logs：
+err = ch.ExchangeDeclare( &amp;quot;logs&amp;quot;, // name &amp;quot;fanout&amp;quot;, // type true, // durable false, // auto-deleted false, // internal false, // no-wait nil, // arguments )  fanout交换机很简单，你可能从名字上就能猜测出来，它把消息发送给它所知道的所有队列。这正是我们的日志系统所需要的。
+ 交换器列表 rabbitmqctl能够列出服务器上所有的交换器：sudo rabbitmqctl list_exchanges 这个列表中有一些叫做amq.*的匿名交换器。这些都是默认创建的，不过这时候你还不需要使用他们。
+匿名的交换器 前面的教程中我们对交换机一无所知，但仍然能够发送消息到队列中。因为我们使用了命名为空字符串(&amp;quot;&amp;quot;)的匿名交换机。 回想我们之前是如何发布一则消息：
+ err = ch.Publish( &amp;quot;&amp;quot;, // exchange q.Name, // routing key false, // mandatory false, // immediate amqp.</description>
+    </item>
+    
     <item>
       <title>RabbitMQ（1）</title>
       <link>https://damon-zhangb.github.io/posts/rabbitmq1/</link>
@@ -57,6 +78,23 @@ type SearchRequest struct { Query string `protobuf:&amp;quot;bytes,1,opt,name=qu
     </item>
     
     <item>
+      <title>RPC --gRPC</title>
+      <link>https://damon-zhangb.github.io/posts/rpc-grpc/</link>
+      <pubDate>Tue, 02 Nov 2021 10:40:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rpc-grpc/</guid>
+      <description>gRpc grpc技术栈 Go语言的gRPC技术栈如图4-1所示：
+图4-1 gRPC技术栈 最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。
+gRPC入门 如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。现在我们将学习gRPC的用法。
+创建hello.proto文件，定义HelloService接口：
+syntax = &amp;quot;proto3&amp;quot;; package main; message String { string value = 1; } service HelloService { rpc Hello (String) returns (String); }  使用protoc-gen-go内置的gRPC插件生成gRPC代码：
+$ protoc --go_out=plugins=grpc:. hello.proto  gRPC插件会为服务端和客户端生成不同的接口：
+type HelloServiceServer interface { Hello(context.Context, *String) (*String, error) } type HelloServiceClient interface { Hello(context.Context, *String, ...grpc.CallOption) (*String, error) }  gRPC通过context.Context参数，为每个方法调用提供了上下文支持。客户端在调用方法的时候，可以通过可选的grpc.CallOption类型的参数提供额外的上下文信息。
+基于服务端的HelloServiceServer接口可以重新实现HelloService服务：
+type HelloServiceImpl struct{} func (p *HelloServiceImpl) Hello( ctx context.Context, args *String, ) (*String, error) { reply := &amp;amp;String{Value: &amp;quot;hello:&amp;quot; + args.</description>
+    </item>
+    
+    <item>
       <title>RPC --入门</title>
       <link>https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
@@ -70,27 +108,6 @@ type SearchRequest struct { Query string `protobuf:&amp;quot;bytes,1,opt,name=qu
 图2-核心功能 下面分别介绍核心 RPC 框架的重要组成：  客户端(Client)：服务调用方。 客户端存根(Client Stub)：存放服务端地址信息，将客户端的请求参数数据信息打包成网络消息，再通过网络传输发送给服务端。 服务端存根(Server Stub)：接收客户端发送过来的请求消息并进行解包，然后再调用本地服务进行处理。 **服务端(**Server)：服务的真正提供者。 Network Service：底层传输，可以是 TCP 或 HTTP。  服务的调用过程为：  client调用client stub，这是一次本地过程调用 client stub将参数打包成一个消息，然后发送这个消息。打包过程也叫做 marshalling client所在的系统将消息发送给server server的的系统将收到的包传给server stub server stub解包得到参数。 解包也被称作 unmarshalling 最后server stub调用服务过程. 返回结果按照相反的步骤传给client  总结一下，RPC要解决的两个问题：  解决分布式系统中，服务之间的调用问题。 远程调用时，要能够像本地调用一样方便，让调用者感知不到远程调用的逻辑。  Hello World Go语言的RPC包的路径为net/rpc，也就是放在了net包目录下面。因此我们可以猜测该RPC包是建立在net包基础之上的。
 我们先构造一个HelloService类型，其中的Hello方法用于实现打印功能：
 type HelloService struct {} func (p *HelloService) Hello(request string, reply *string) error { *reply = &amp;quot;hello:&amp;quot; + request return nil }  其中Hello方法必须满足Go语言的RPC规则：方法只能有两个可序列化的参数，其中第二个参数是指针类型，并且返回一个error类型，同时必须是公开的方法。</description>
-    </item>
-    
-    <item>
-      <title>RabbitMQ（2）</title>
-      <link>https://damon-zhangb.github.io/posts/rabbitmq2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://damon-zhangb.github.io/posts/rabbitmq2/</guid>
-      <description>发布/订阅 在上一篇中，我们搭建了一个工作队列，每个任务只分发给一个工作者（worker）。在本篇教程中，我们要做的跟之前完全不一样 —— 分发一个消息给多个消费者（consumers）。这种模式被称为**“发布／订阅”。**
-为了描述这种模式，我们将会构建一个简单的日志系统。它包括两个程序——第一个程序负责发送日志消息，第二个程序负责获取消息并输出内容。
-在我们的这个日志系统中，所有正在运行的接收方程序都会接受消息。我们用其中一个接收者（receiver）把日志写入硬盘中，另外一个接受者（receiver）把日志输出到屏幕上。
-最终，日志消息被广播给所有的接受者（receivers）。
-交换机（Exchanges） 前面的教程中，我们发送消息到队列并从中取出消息。现在是时候介绍RabbitMQ中完整的消息模型了。
-让我们简单的概括一下之前的教程：
- 发布者（producer）是发布消息的应用程序。 队列（queue）用于消息存储的缓冲。 消费者（consumer）是接收消息的应用程序。  RabbitMQ消息模型的核心理念是：发布者（producer）不会直接发送任何消息给队列。事实上，发布者（producer）甚至不知道消息是否已经被投递到队列。
-发布者（producer）只需要把消息发送给一个交换机（exchange）。交换机非常简单，它一边从发布者方接收消息，一边把消息推送到队列。交换机必须知道如何处理它接收到的消息，是应该推送到指定的队列还是是多个队列，或者是直接忽略消息。这些规则是通过交换机类型（exchange type）来定义的。
-有几个可供选择的交换机类型：direct, topic, headers和fanout。我们在这里主要说明最后一个 —— fanout。先创建一个fanout类型的交换机，命名为logs：
-err = ch.ExchangeDeclare( &amp;quot;logs&amp;quot;, // name &amp;quot;fanout&amp;quot;, // type true, // durable false, // auto-deleted false, // internal false, // no-wait nil, // arguments )  fanout交换机很简单，你可能从名字上就能猜测出来，它把消息发送给它所知道的所有队列。这正是我们的日志系统所需要的。
- 交换器列表 rabbitmqctl能够列出服务器上所有的交换器：sudo rabbitmqctl list_exchanges 这个列表中有一些叫做amq.*的匿名交换器。这些都是默认创建的，不过这时候你还不需要使用他们。
-匿名的交换器 前面的教程中我们对交换机一无所知，但仍然能够发送消息到队列中。因为我们使用了命名为空字符串(&amp;quot;&amp;quot;)的匿名交换机。 回想我们之前是如何发布一则消息：
- err = ch.Publish( &amp;quot;&amp;quot;, // exchange q.Name, // routing key false, // mandatory false, // immediate amqp.</description>
     </item>
     
   </channel>

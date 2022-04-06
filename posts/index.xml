@@ -8,7 +8,28 @@
     <language>zh</language>
     <copyright>&amp;copy; 2021 &lt;a href=&#34;https://github.com/Damon-Zhangb&#34;&gt;Damon.Zhang&lt;/a&gt;
 </copyright>
-    <lastBuildDate>Mon, 08 Nov 2021 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Apr 2022 09:30:18 +0800</lastBuildDate><atom:link href="https://damon-zhangb.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RabbitMQ（2）</title>
+      <link>https://damon-zhangb.github.io/posts/rabbitmq2/</link>
+      <pubDate>Wed, 06 Apr 2022 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rabbitmq2/</guid>
+      <description>发布/订阅 在上一篇中，我们搭建了一个工作队列，每个任务只分发给一个工作者（worker）。在本篇教程中，我们要做的跟之前完全不一样 —— 分发一个消息给多个消费者（consumers）。这种模式被称为**“发布／订阅”。**
+为了描述这种模式，我们将会构建一个简单的日志系统。它包括两个程序——第一个程序负责发送日志消息，第二个程序负责获取消息并输出内容。
+在我们的这个日志系统中，所有正在运行的接收方程序都会接受消息。我们用其中一个接收者（receiver）把日志写入硬盘中，另外一个接受者（receiver）把日志输出到屏幕上。
+最终，日志消息被广播给所有的接受者（receivers）。
+交换机（Exchanges） 前面的教程中，我们发送消息到队列并从中取出消息。现在是时候介绍RabbitMQ中完整的消息模型了。
+让我们简单的概括一下之前的教程：
+ 发布者（producer）是发布消息的应用程序。 队列（queue）用于消息存储的缓冲。 消费者（consumer）是接收消息的应用程序。  RabbitMQ消息模型的核心理念是：发布者（producer）不会直接发送任何消息给队列。事实上，发布者（producer）甚至不知道消息是否已经被投递到队列。
+发布者（producer）只需要把消息发送给一个交换机（exchange）。交换机非常简单，它一边从发布者方接收消息，一边把消息推送到队列。交换机必须知道如何处理它接收到的消息，是应该推送到指定的队列还是是多个队列，或者是直接忽略消息。这些规则是通过交换机类型（exchange type）来定义的。
+有几个可供选择的交换机类型：direct, topic, headers和fanout。我们在这里主要说明最后一个 —— fanout。先创建一个fanout类型的交换机，命名为logs：
+err = ch.ExchangeDeclare( &amp;quot;logs&amp;quot;, // name &amp;quot;fanout&amp;quot;, // type true, // durable false, // auto-deleted false, // internal false, // no-wait nil, // arguments )  fanout交换机很简单，你可能从名字上就能猜测出来，它把消息发送给它所知道的所有队列。这正是我们的日志系统所需要的。
+ 交换器列表 rabbitmqctl能够列出服务器上所有的交换器：sudo rabbitmqctl list_exchanges 这个列表中有一些叫做amq.*的匿名交换器。这些都是默认创建的，不过这时候你还不需要使用他们。
+匿名的交换器 前面的教程中我们对交换机一无所知，但仍然能够发送消息到队列中。因为我们使用了命名为空字符串(&amp;quot;&amp;quot;)的匿名交换机。 回想我们之前是如何发布一则消息：
+ err = ch.Publish( &amp;quot;&amp;quot;, // exchange q.Name, // routing key false, // mandatory false, // immediate amqp.</description>
+    </item>
+    
     <item>
       <title>RabbitMQ（1）</title>
       <link>https://damon-zhangb.github.io/posts/rabbitmq1/</link>
@@ -30,6 +51,39 @@ go get github.com/streadway/amqp   现在我们已经安装了 amqp，我们可�
 发送 我们将调用我们的消息发布者（发送者）send.go和我们的消息消费者（接收者） receive.go。发布者将连接到 RabbitMQ，发送一条消息，然后退出。
 在 send.go 中，我们需要先导入库:
 package main import ( &amp;quot;log&amp;quot; &amp;quot;github.com/streadway/amqp&amp;quot; )  我们还需要一个辅助函数来检查每个 amqp 调用的返回值：</description>
+    </item>
+    
+    <item>
+      <title>Go 每日一库之 cron</title>
+      <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/</link>
+      <pubDate>Thu, 04 Nov 2021 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/</guid>
+      <description>简介 cron一个用于管理定时任务的库，用 Go 实现 Linux 中crontab这个命令的效果。
+HelloWorld 安装cron，目前最新稳定版本为 v3：
+$ go get -u github.com/robfig/cron/v3  使用：
+package main import ( &amp;quot;fmt&amp;quot; &amp;quot;time&amp;quot; &amp;quot;github.com/robfig/cron/v3&amp;quot; ) func main() { c := cron.New() c.AddFunc(&amp;quot;@every 1s&amp;quot;, func() { fmt.Println(&amp;quot;tick every 1 second&amp;quot;) }) c.Start() time.Sleep(time.Second * 5) }  使用非常简单，创建cron对象，这个对象用于管理定时任务。
+调用cron对象的AddFunc()方法向管理器中添加定时任务。AddFunc()接受两个参数，参数 1 以字符串形式指定触发时间规则，参数 2 是一个无参的函数，每次触发时调用。@every 1s表示每秒触发一次，@every后加一个时间间隔，表示每隔多长时间触发一次。例如@every 1h表示每小时触发一次，@every 1m2s表示每隔 1 分 2 秒触发一次。time.ParseDuration()支持的格式都可以用在这里。
+调用c.Start()启动定时循环。
+注意一点，因为c.Start()启动一个新的 goroutine 做循环检测，我们在代码最后加了一行time.Sleep(time.Second * 5)防止主 goroutine 退出。
+运行效果，每隔 1s 输出一行字符串：
+$ go run main.go tick every 1 second tick every 1 second tick every 1 second tick every 1 second tick every 1 second  时间格式 与Linux 中crontab命令相似，cron库支持用 5 个空格分隔的域来表示时间。这 5 个域含义依次为：</description>
+    </item>
+    
+    <item>
+      <title>Go 每日一库之 logrus</title>
+      <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/</link>
+      <pubDate>Thu, 04 Nov 2021 09:30:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/</guid>
+      <description>简介 log库只提供了三组接口，功能过于简单了。 今天，我们来介绍一个日志库中的“明星库”——logrus。 logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。
+helloworld 第三方库需要先安装：
+$ go get github.com/sirupsen/logrus  后使用：
+package main import ( &amp;quot;github.com/sirupsen/logrus&amp;quot; ) func main() { logrus.SetLevel(logrus.TraceLevel) logrus.Trace(&amp;quot;trace msg&amp;quot;) logrus.Debug(&amp;quot;debug msg&amp;quot;) logrus.Info(&amp;quot;info msg&amp;quot;) logrus.Warn(&amp;quot;warn msg&amp;quot;) logrus.Error(&amp;quot;error msg&amp;quot;) logrus.Fatal(&amp;quot;fatal msg&amp;quot;) logrus.Panic(&amp;quot;panic msg&amp;quot;) }  logrus的使用非常简单，与标准库log类似。logrus支持更多的日志级别：
+ Panic：记录日志，然后panic。 Fatal：致命错误，出现错误时程序无法正常运转。输出日志后，程序退出； Error：错误日志，需要查看原因； Warn：警告信息，提醒程序员注意； Info：关键操作，核心流程的日志； Debug：一般程序中输出的调试信息； Trace：很细粒度的信息，一般用不到；  日志级别从上向下依次增加，Trace最大，Panic最小。logrus有一个日志级别，高于这个级别的日志不会输出。 默认的级别为InfoLevel。所以为了能看到Trace和Debug日志，我们在main函数第一行设置日志级别为TraceLevel。
+定制 输出文件名 调用logrus.SetReportCaller(true)设置在输出日志中添加文件名和方法信息：
+package main import ( &amp;quot;github.com/sirupsen/logrus&amp;quot; ) func main() { logrus.SetReportCaller(true) logrus.Info(&amp;quot;info msg&amp;quot;) }  输出多了两个字段file为调用logrus相关方法的文件名，method为方法名：
+$ go run main.go time=&amp;quot;2020-02-07T21:46:03+08:00&amp;quot; level=info msg=&amp;quot;info msg&amp;quot; func=main.</description>
     </item>
     
     <item>
@@ -57,6 +111,23 @@ type SearchRequest struct { Query string `protobuf:&amp;quot;bytes,1,opt,name=qu
     </item>
     
     <item>
+      <title>RPC --gRPC</title>
+      <link>https://damon-zhangb.github.io/posts/rpc-grpc/</link>
+      <pubDate>Tue, 02 Nov 2021 10:40:18 +0800</pubDate>
+      
+      <guid>https://damon-zhangb.github.io/posts/rpc-grpc/</guid>
+      <description>gRpc grpc技术栈 Go语言的gRPC技术栈如图4-1所示：
+图4-1 gRPC技术栈 最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。
+gRPC入门 如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。现在我们将学习gRPC的用法。
+创建hello.proto文件，定义HelloService接口：
+syntax = &amp;quot;proto3&amp;quot;; package main; message String { string value = 1; } service HelloService { rpc Hello (String) returns (String); }  使用protoc-gen-go内置的gRPC插件生成gRPC代码：
+$ protoc --go_out=plugins=grpc:. hello.proto  gRPC插件会为服务端和客户端生成不同的接口：
+type HelloServiceServer interface { Hello(context.Context, *String) (*String, error) } type HelloServiceClient interface { Hello(context.Context, *String, ...grpc.CallOption) (*String, error) }  gRPC通过context.Context参数，为每个方法调用提供了上下文支持。客户端在调用方法的时候，可以通过可选的grpc.CallOption类型的参数提供额外的上下文信息。
+基于服务端的HelloServiceServer接口可以重新实现HelloService服务：
+type HelloServiceImpl struct{} func (p *HelloServiceImpl) Hello( ctx context.Context, args *String, ) (*String, error) { reply := &amp;amp;String{Value: &amp;quot;hello:&amp;quot; + args.</description>
+    </item>
+    
+    <item>
       <title>RPC --入门</title>
       <link>https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/</link>
       <pubDate>Mon, 01 Nov 2021 10:40:18 +0800</pubDate>
@@ -73,24 +144,12 @@ type HelloService struct {} func (p *HelloService) Hello(request string, reply *
     </item>
     
     <item>
-      <title>RabbitMQ（2）</title>
-      <link>https://damon-zhangb.github.io/posts/rabbitmq2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Go 每日一库之 Gin</title>
+      <link>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/</link>
+      <pubDate>Mon, 01 Nov 2021 09:30:18 +0800</pubDate>
       
-      <guid>https://damon-zhangb.github.io/posts/rabbitmq2/</guid>
-      <description>发布/订阅 在上一篇中，我们搭建了一个工作队列，每个任务只分发给一个工作者（worker）。在本篇教程中，我们要做的跟之前完全不一样 —— 分发一个消息给多个消费者（consumers）。这种模式被称为**“发布／订阅”。**
-为了描述这种模式，我们将会构建一个简单的日志系统。它包括两个程序——第一个程序负责发送日志消息，第二个程序负责获取消息并输出内容。
-在我们的这个日志系统中，所有正在运行的接收方程序都会接受消息。我们用其中一个接收者（receiver）把日志写入硬盘中，另外一个接受者（receiver）把日志输出到屏幕上。
-最终，日志消息被广播给所有的接受者（receivers）。
-交换机（Exchanges） 前面的教程中，我们发送消息到队列并从中取出消息。现在是时候介绍RabbitMQ中完整的消息模型了。
-让我们简单的概括一下之前的教程：
- 发布者（producer）是发布消息的应用程序。 队列（queue）用于消息存储的缓冲。 消费者（consumer）是接收消息的应用程序。  RabbitMQ消息模型的核心理念是：发布者（producer）不会直接发送任何消息给队列。事实上，发布者（producer）甚至不知道消息是否已经被投递到队列。
-发布者（producer）只需要把消息发送给一个交换机（exchange）。交换机非常简单，它一边从发布者方接收消息，一边把消息推送到队列。交换机必须知道如何处理它接收到的消息，是应该推送到指定的队列还是是多个队列，或者是直接忽略消息。这些规则是通过交换机类型（exchange type）来定义的。
-有几个可供选择的交换机类型：direct, topic, headers和fanout。我们在这里主要说明最后一个 —— fanout。先创建一个fanout类型的交换机，命名为logs：
-err = ch.ExchangeDeclare( &amp;quot;logs&amp;quot;, // name &amp;quot;fanout&amp;quot;, // type true, // durable false, // auto-deleted false, // internal false, // no-wait nil, // arguments )  fanout交换机很简单，你可能从名字上就能猜测出来，它把消息发送给它所知道的所有队列。这正是我们的日志系统所需要的。
- 交换器列表 rabbitmqctl能够列出服务器上所有的交换器：sudo rabbitmqctl list_exchanges 这个列表中有一些叫做amq.*的匿名交换器。这些都是默认创建的，不过这时候你还不需要使用他们。
-匿名的交换器 前面的教程中我们对交换机一无所知，但仍然能够发送消息到队列中。因为我们使用了命名为空字符串(&amp;quot;&amp;quot;)的匿名交换机。 回想我们之前是如何发布一则消息：
- err = ch.Publish( &amp;quot;&amp;quot;, // exchange q.Name, // routing key false, // mandatory false, // immediate amqp.</description>
+      <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/</guid>
+      <description>1.简介  Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点 对于golang而言，web框架的依赖要远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错 借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范  hello world package main import ( &amp;quot;net/http&amp;quot; &amp;quot;github.com/gin-gonic/gin&amp;quot; ) func main() { // 1.创建路由 r := gin.Default() // 2.绑定路由规则，执行的函数 // gin.Context，封装了request和response r.GET(&amp;quot;/&amp;quot;, func(c *gin.Context) { c.String(http.StatusOK, &amp;quot;hello World!&amp;quot;) }) // 3.监听端口，默认在8080 // Run(&amp;quot;里面不指定端口号默认为8080&amp;quot;) r.Run(&amp;quot;:8000&amp;quot;) }  </description>
     </item>
     
   </channel>
