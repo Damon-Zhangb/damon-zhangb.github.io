@@ -15,7 +15,7 @@
       <pubDate>Thu, 04 Nov 2021 09:30:18 +0800</pubDate>
       
       <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-cron/</guid>
-      <description>Go 每日一库之 cron 简介 cron一个用于管理定时任务的库，用 Go 实现 Linux 中crontab这个命令的效果。
+      <description>简介 cron一个用于管理定时任务的库，用 Go 实现 Linux 中crontab这个命令的效果。
 HelloWorld 安装cron，目前最新稳定版本为 v3：
 $ go get -u github.com/robfig/cron/v3  使用：
 package main import ( &amp;quot;fmt&amp;quot; &amp;quot;time&amp;quot; &amp;quot;github.com/robfig/cron/v3&amp;quot; ) func main() { c := cron.New() c.AddFunc(&amp;quot;@every 1s&amp;quot;, func() { fmt.Println(&amp;quot;tick every 1 second&amp;quot;) }) c.Start() time.Sleep(time.Second * 5) }  使用非常简单，创建cron对象，这个对象用于管理定时任务。
@@ -23,7 +23,7 @@ package main import ( &amp;quot;fmt&amp;quot; &amp;quot;time&amp;quot; &amp;quot
 调用c.Start()启动定时循环。
 注意一点，因为c.Start()启动一个新的 goroutine 做循环检测，我们在代码最后加了一行time.Sleep(time.Second * 5)防止主 goroutine 退出。
 运行效果，每隔 1s 输出一行字符串：
-$ go run main.</description>
+$ go run main.go tick every 1 second tick every 1 second tick every 1 second tick every 1 second tick every 1 second  时间格式 与Linux 中crontab命令相似，cron库支持用 5 个空格分隔的域来表示时间。这 5 个域含义依次为：</description>
     </item>
     
     <item>
@@ -32,14 +32,14 @@ $ go run main.</description>
       <pubDate>Thu, 04 Nov 2021 09:30:18 +0800</pubDate>
       
       <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-logrus/</guid>
-      <description>Go 每日一库之 logrus 简介 log库只提供了三组接口，功能过于简单了。 今天，我们来介绍一个日志库中的“明星库”——logrus。 logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。
+      <description>简介 log库只提供了三组接口，功能过于简单了。 今天，我们来介绍一个日志库中的“明星库”——logrus。 logrus完全兼容标准的log库，还支持文本、JSON 两种日志输出格式。很多知名的开源项目都使用了这个库，如大名鼎鼎的 docker。
 helloworld 第三方库需要先安装：
 $ go get github.com/sirupsen/logrus  后使用：
 package main import ( &amp;quot;github.com/sirupsen/logrus&amp;quot; ) func main() { logrus.SetLevel(logrus.TraceLevel) logrus.Trace(&amp;quot;trace msg&amp;quot;) logrus.Debug(&amp;quot;debug msg&amp;quot;) logrus.Info(&amp;quot;info msg&amp;quot;) logrus.Warn(&amp;quot;warn msg&amp;quot;) logrus.Error(&amp;quot;error msg&amp;quot;) logrus.Fatal(&amp;quot;fatal msg&amp;quot;) logrus.Panic(&amp;quot;panic msg&amp;quot;) }  logrus的使用非常简单，与标准库log类似。logrus支持更多的日志级别：
  Panic：记录日志，然后panic。 Fatal：致命错误，出现错误时程序无法正常运转。输出日志后，程序退出； Error：错误日志，需要查看原因； Warn：警告信息，提醒程序员注意； Info：关键操作，核心流程的日志； Debug：一般程序中输出的调试信息； Trace：很细粒度的信息，一般用不到；  日志级别从上向下依次增加，Trace最大，Panic最小。logrus有一个日志级别，高于这个级别的日志不会输出。 默认的级别为InfoLevel。所以为了能看到Trace和Debug日志，我们在main函数第一行设置日志级别为TraceLevel。
 定制 输出文件名 调用logrus.SetReportCaller(true)设置在输出日志中添加文件名和方法信息：
 package main import ( &amp;quot;github.com/sirupsen/logrus&amp;quot; ) func main() { logrus.SetReportCaller(true) logrus.Info(&amp;quot;info msg&amp;quot;) }  输出多了两个字段file为调用logrus相关方法的文件名，method为方法名：
-$ go run main.</description>
+$ go run main.go time=&amp;quot;2020-02-07T21:46:03+08:00&amp;quot; level=info msg=&amp;quot;info msg&amp;quot; func=main.</description>
     </item>
     
     <item>
@@ -48,7 +48,7 @@ $ go run main.</description>
       <pubDate>Mon, 01 Nov 2021 09:30:18 +0800</pubDate>
       
       <guid>https://damon-zhangb.github.io/posts/go-%E6%AF%8F%E6%97%A5%E4%B8%80%E5%BA%93%E4%B9%8B-gin/</guid>
-      <description>Go 每日一库之 Gin 1.简介  Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点 对于golang而言，web框架的依赖要远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错 借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范  hello world package main import ( &amp;quot;net/http&amp;quot; &amp;quot;github.com/gin-gonic/gin&amp;quot; ) func main() { // 1.创建路由 r := gin.Default() // 2.绑定路由规则，执行的函数 // gin.Context，封装了request和response r.GET(&amp;quot;/&amp;quot;, func(c *gin.Context) { c.String(http.StatusOK, &amp;quot;hello World!&amp;quot;) }) // 3.监听端口，默认在8080 // Run(&amp;quot;里面不指定端口号默认为8080&amp;quot;) r.Run(&amp;quot;:8000&amp;quot;) }  </description>
+      <description>1.简介  Gin是一个golang的微框架，封装比较优雅，API友好，源码注释比较明确，具有快速灵活，容错方便等特点 对于golang而言，web框架的依赖要远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错 借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范  hello world package main import ( &amp;quot;net/http&amp;quot; &amp;quot;github.com/gin-gonic/gin&amp;quot; ) func main() { // 1.创建路由 r := gin.Default() // 2.绑定路由规则，执行的函数 // gin.Context，封装了request和response r.GET(&amp;quot;/&amp;quot;, func(c *gin.Context) { c.String(http.StatusOK, &amp;quot;hello World!&amp;quot;) }) // 3.监听端口，默认在8080 // Run(&amp;quot;里面不指定端口号默认为8080&amp;quot;) r.Run(&amp;quot;:8000&amp;quot;) }  </description>
     </item>
     
   </channel>

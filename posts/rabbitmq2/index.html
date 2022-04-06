@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang='zh' ><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+<title>RabbitMQ（2） | DamonZhang🔥</title>
+
+<meta name="generator" content="Hugo Eureka 0.8.3" />
+<link rel="stylesheet" href="https://damon-zhangb.github.io/css/eureka.min.css">
+<script defer src="https://damon-zhangb.github.io/js/eureka.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/idea.min.css"
+   media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"
+   crossorigin></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/dart.min.js"
+     crossorigin></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/languages/Go.min.js"
+     crossorigin></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"
+   integrity="sha256-uNYoXefWRqv&#43;PsIF/OflNmwtKM4lStn9yrz2gVl6ymo="  crossorigin></script>
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+   integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"  media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" 
+  integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"  crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+   integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"  crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/mermaid@8.9.2/dist/mermaid.min.js" 
+  integrity="sha256-Zmpaaj&#43;GXFsPF5WdPArSrnW3b30dovldeKsW00xBVwE="  crossorigin></script>
+
+
+
+<meta name="description"
+  content="介绍发布订阅、路由、主题交流及在远处调用中的运用。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"Posts",
+      "item":"https://damon-zhangb.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"RabbitMQ（2）",
+      "item":"https://damon-zhangb.github.io/posts/rabbitmq2/"}]
+}
+</script>
+
+
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://damon-zhangb.github.io/posts/rabbitmq2/"
+    },
+    "headline": "RabbitMQ（2） | DamonZhang🔥","wordCount":  1281 ,
+    "author": {
+        "@type": "Person",
+        "name": "Me"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Damon",
+        },
+    "description": "介绍发布订阅、路由、主题交流及在远处调用中的运用。"
+}
+</script><meta property="og:title" content="RabbitMQ（2） | DamonZhang🔥" />
+<meta property="og:type" content="article" />
+
+
+
+<meta property="og:url" content="https://damon-zhangb.github.io/posts/rabbitmq2/" />
+
+
+
+<meta property="og:description" content="介绍发布订阅、路由、主题交流及在远处调用中的运用。" />
+
+
+
+<meta property="og:locale" content="zh" />
+
+
+
+
+<meta property="og:site_name" content="DamonZhang🔥" />
+
+
+
+
+
+
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="消息队列" />
+
+<meta property="article:tag" content="分布式" />
+
+
+
+
+
+
+
+
+
+<meta property="og:see_also" content="https://damon-zhangb.github.io/posts/rabbitmq1/" />
+
+
+
+
+
+
+
+<body class="flex flex-col min-h-screen">
+  <header class="fixed flex items-center w-full min-h-16 pl-scrollbar z-50 bg-secondary-bg shadow-sm">
+    <div class="w-full max-w-screen-xl mx-auto"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    if (((storageColorScheme == 'Auto' || storageColorScheme == null) && window.matchMedia("(prefers-color-scheme: dark)").matches) || storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+</script>
+<nav class="flex items-center justify-between flex-wrap px-4 py-4 md:py-0">
+    <a href="/" class="mr-6 text-primary-text text-xl font-bold">DamonZhang🔥</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:flex-grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="md:flex md:h-16 text-sm md:flex-grow pb-4 md:pb-0 border-b md:border-b-0">
+            <a href="/#about" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  mr-4">关于我</a>
+            <a href="/posts/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  selected-menu-item  mr-4">文章</a>
+            <a href="/docs/" class="block mt-4 md:inline-block md:mt-0 md:h-(16-4px) md:leading-(16-4px) box-border md:border-t-2 md:border-b-2  border-transparent  mr-4">档案</a>
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    <i class="fas fa-adjust"></i>
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka" name="Light">浅色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Dark">深色</span>
+                    <span class="px-4 py-1 hover:text-eureka" name="Auto">自动</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    
+    let element = document.getElementById('lightDarkMode')
+    if (storageColorScheme == null || storageColorScheme == 'Auto') {
+        document.addEventListener('DOMContentLoaded', () => {
+            window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', switchDarkMode)
+        })
+    } else if (storageColorScheme == "Light") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'sun')
+        element.firstElementChild.classList.add('fa-sun')
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-adjust')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+    });
+</script>
+</div>
+  </header>
+  <main class="flex-grow pt-16">
+    <div class="pl-scrollbar">
+      <div class="w-full max-w-screen-xl lg:px-4 xl:px-8 mx-auto">
+
+
+<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+        <h1 class="font-bold text-3xl text-primary-text">RabbitMQ（2）</h1>
+        <div class="flex flex-wrap flex-row items-center mt-2 text-tertiary-text">
+    <div class="mr-6 my-2">
+        <i class="fas fa-calendar mr-1"></i>
+        <span>0001-01-01</span>
+    </div>
+    <div class="mr-6 my-2">
+        <i class="fas fa-clock mr-1"></i>
+        <span>7分钟阅读时长</span>
+    </div>
+    
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%80%E6%9C%AF/" class="hover:text-eureka">分布式技术</a>
+        
+    </div>
+    
+
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://damon-zhangb.github.io/series/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97rabbitmq/" class="hover:text-eureka">消息队列RabbitMQ</a>
+        
+    </div>
+    
+</div>
+        
+        
+        
+
+        <div class="content">
+            <h2 id="发布订阅">发布/订阅</h2>
+<p>在上一篇中，我们搭建了一个工作队列，每个任务只分发给一个工作者（worker）。在本篇教程中，我们要做的跟之前完全不一样 —— 分发一个消息给多个消费者（consumers）。这种模式被称为**“发布／订阅”。**</p>
+<p>为了描述这种模式，我们将会构建一个简单的日志系统。它包括两个程序——第一个程序负责发送日志消息，第二个程序负责获取消息并输出内容。</p>
+<p>在我们的这个日志系统中，所有正在运行的接收方程序都会接受消息。我们用其中一个接收者（receiver）把日志写入硬盘中，另外一个接受者（receiver）把日志输出到屏幕上。</p>
+<p>最终，日志消息被广播给所有的接受者（receivers）。</p>
+<h3 id="交换机exchanges">交换机（Exchanges）</h3>
+<p>前面的教程中，我们发送消息到队列并从中取出消息。现在是时候介绍RabbitMQ中完整的消息模型了。</p>
+<p>让我们简单的概括一下之前的教程：</p>
+<ul>
+<li>发布者（producer）是发布消息的应用程序。</li>
+<li>队列（queue）用于消息存储的缓冲。</li>
+<li>消费者（consumer）是接收消息的应用程序。</li>
+</ul>
+<p><strong>RabbitMQ消息模型的核心理念是：发布者（producer）不会直接发送任何消息给队列</strong>。事实上，发布者（producer）甚至不知道消息是否已经被投递到队列。</p>
+<p><strong>发布者（producer）只需要把消息发送给一个交换机（exchange）</strong>。交换机非常简单，它一边从发布者方接收消息，一边把消息推送到队列。交换机必须知道如何处理它接收到的消息，是应该推送到指定的队列还是是多个队列，或者是直接忽略消息。这些规则是通过交换机类型（exchange type）来定义的。</p>
+<p><img src="http://www.rabbitmq.com/img/tutorials/exchanges.png" alt="exchanges"></p>
+<p>有几个可供选择的交换机类型：<code>direct</code>, <code>topic</code>, <code>headers</code>和<code>fanout</code>。我们在这里主要说明最后一个 —— <code>fanout</code>。先创建一个<code>fanout</code>类型的交换机，命名为logs：</p>
+<pre><code class="language-go">err = ch.ExchangeDeclare(
+  &quot;logs&quot;,   // name
+  &quot;fanout&quot;, // type
+  true,     // durable
+  false,    // auto-deleted
+  false,    // internal
+  false,    // no-wait
+  nil,      // arguments
+)
+</code></pre>
+<p><code>fanout</code>交换机很简单，你可能从名字上就能猜测出来，它把消息发送给它所知道的所有队列。这正是我们的日志系统所需要的。</p>
+<blockquote>
+<h5 id="交换器列表">交换器列表</h5>
+<p><code>rabbitmqctl</code>能够列出服务器上所有的交换器：<code>sudo rabbitmqctl list_exchanges</code> 这个列表中有一些叫做<code>amq.*</code>的匿名交换器。这些都是默认创建的，不过这时候你还不需要使用他们。</p>
+<h5 id="匿名的交换器">匿名的交换器</h5>
+<p>前面的教程中我们对交换机一无所知，但仍然能够发送消息到队列中。因为我们使用了命名为空字符串(&quot;&quot;)的匿名交换机。 回想我们之前是如何发布一则消息：</p>
+<pre><code> err = ch.Publish(
+  &quot;&quot;,     // exchange
+  q.Name, // routing key
+  false,  // mandatory
+  false,  // immediate
+  amqp.Publishing{
+    ContentType: &quot;text/plain&quot;,
+    Body:        []byte(body),
+})
+</code></pre>
+<p>exchange参数就是交换机的名称。空字符串代表默认或者匿名交换机，消息将会根据指定的<code>routing_key</code>分发到指定的队列。</p>
+</blockquote>
+<p>现在，我们就可以发送消息到一个具名交换机了：</p>
+<pre><code class="language-go">err = ch.ExchangeDeclare(
+  &quot;logs&quot;,   // name
+  &quot;fanout&quot;, // type
+  true,     // durable
+  false,    // auto-deleted
+  false,    // internal
+  false,    // no-wait
+  nil,      // arguments
+)
+failOnError(err, &quot;Failed to declare an exchange&quot;)
+
+body := bodyFrom(os.Args)
+err = ch.Publish(
+  &quot;logs&quot;, // exchange
+  &quot;&quot;,     // routing key
+  false,  // mandatory
+  false,  // immediate
+  amqp.Publishing{
+          ContentType: &quot;text/plain&quot;,
+          Body:        []byte(body),
+  })
+</code></pre>
+<h3 id="临时队列">临时队列</h3>
+<p>你还记得之前我们使用的队列名吗（ hello和task_queue）？给一个队列命名是很重要的——我们需要把工作者（workers）指向正确的队列。如果你打算在发布者（producers）和消费者（consumers）之间共享同队列的话，给队列命名是十分重要的。</p>
+<p>但是这并不适用于我们的日志系统。我们打算接收所有的日志消息，而不仅仅是一小部分。我们关心的是最新的消息而不是旧的。为了解决这个问题，我们需要做两件事情。</p>
+<p>首先，当我们连接上RabbitMQ的时候，我们需要一个全新的、空的队列。我们可以手动创建一个随机的队列名，或者让服务器为我们选择一个随机的队列名（推荐）。</p>
+<p>其次，当与消费者（consumer）断开连接的时候，这个队列应当被立即删除。 在<code>amqp</code>客户端中，当我们将队列名称作为空字符串提供时，我们创建一个具有生成名称的非持久队列：</p>
+<pre><code class="language-go">q, err := ch.QueueDeclare(
+  &quot;&quot;,    // name
+  false, // durable
+  false, // delete when usused
+  true,  // exclusive
+  false, // no-wait
+  nil,   // arguments
+)
+</code></pre>
+<p>该方法返回时，队列实例包含RabbitMQ生成的随机队列名称。例如，它可能看起来像<code>amq.gen-JzTY20BRgKO-HjmUJj0wLg</code>。 当声明它的连接关闭时，队列将被删除，因为它被声明为<code>exclusive</code>。 您可以在<a href="https://www.rabbitmq.com/queues.html">guide on queues</a>了解有关<code>exclusive</code>和其他队列属性的更多信息</p>
+<h3 id="绑定bindings">绑定（Bindings）</h3>
+<p><img src="http://www.rabbitmq.com/img/tutorials/bindings.png" alt="bindings"></p>
+<p>我们已经创建了一个<code>fanout</code>交换机和一个队列。现在我们需要告诉交换机如何发送消息给我们的队列。交换器和队列之间的联系我们称之为绑定（binding）。</p>
+<pre><code class="language-go">err = ch.QueueBind(
+  q.Name, // queue name
+  &quot;&quot;,     // routing key
+  &quot;logs&quot;, // exchange
+  false,
+  nil,
+)
+</code></pre>
+<p>现在，logs交换机将会把消息添加到我们的队列中。</p>
+<h3 id="完整代码">完整代码</h3>
+<p>发布日志消息的程序看起来和之前的没有太大区别。最重要的改变就是我们把消息发送给logs交换机而不是匿名交换机。在发送的时候我们需要提供<code>routing_key</code>参数，但可以忽略它的值。</p>
+<p><em>以下是<code>send,go</code>：</em></p>
+<pre><code class="language-go">package main
+
+import (
+        &quot;log&quot;
+        &quot;os&quot;
+        &quot;strings&quot;
+
+        &quot;github.com/streadway/amqp&quot;
+)
+
+func failOnError(err error, msg string) {
+        if err != nil {
+                log.Fatalf(&quot;%s: %s&quot;, msg, err)
+        }
+}
+
+func main() {
+        conn, err := amqp.Dial(&quot;amqp://guest:guest@localhost:5672/&quot;)
+        failOnError(err, &quot;Failed to connect to RabbitMQ&quot;)
+        defer conn.Close()
+
+        ch, err := conn.Channel()
+        failOnError(err, &quot;Failed to open a channel&quot;)
+        defer ch.Close()
+
+        err = ch.ExchangeDeclare(
+                &quot;logs&quot;,   // name
+                &quot;fanout&quot;, // type
+                true,     // durable
+                false,    // auto-deleted
+                false,    // internal
+                false,    // no-wait
+                nil,      // arguments
+        )
+        failOnError(err, &quot;Failed to declare an exchange&quot;)
+
+        body := bodyFrom(os.Args)
+        err = ch.Publish(
+                &quot;logs&quot;, // exchange
+                &quot;&quot;,     // routing key
+                false,  // mandatory
+                false,  // immediate
+                amqp.Publishing{
+                        ContentType: &quot;text/plain&quot;,
+                        Body:        []byte(body),
+                })
+        failOnError(err, &quot;Failed to publish a message&quot;)
+
+        log.Printf(&quot; [x] Sent %s&quot;, body)
+}
+
+func bodyFrom(args []string) string {
+        var s string
+        if (len(args) &lt; 2) || os.Args[1] == &quot;&quot; {
+                s = &quot;hello&quot;
+        } else {
+                s = strings.Join(args[1:], &quot; &quot;)
+        }
+        return s
+}
+</code></pre>
+<p>正如你看到的那样，在连接成功之后，我们声明了一个交换器，这一个是很重要的，因为不允许发布消息到不存在的交换器。</p>
+<p>如果没有绑定队列到交换器，消息将会丢失。但这个没有所谓，如果没有消费者监听，那么消息就会被忽略。</p>
+<p><em><code>receive.go</code>:的代码：</em></p>
+<pre><code class="language-go">package main
+
+import (
+        &quot;log&quot;
+
+        &quot;github.com/streadway/amqp&quot;
+)
+
+func failOnError(err error, msg string) {
+        if err != nil {
+                log.Fatalf(&quot;%s: %s&quot;, msg, err)
+        }
+}
+
+func main() {
+        conn, err := amqp.Dial(&quot;amqp://guest:guest@localhost:5672/&quot;)
+        failOnError(err, &quot;Failed to connect to RabbitMQ&quot;)
+        defer conn.Close()
+
+        ch, err := conn.Channel()
+        failOnError(err, &quot;Failed to open a channel&quot;)
+        defer ch.Close()
+
+        err = ch.ExchangeDeclare(
+                &quot;logs&quot;,   // name
+                &quot;fanout&quot;, // type
+                true,     // durable
+                false,    // auto-deleted
+                false,    // internal
+                false,    // no-wait
+                nil,      // arguments
+        )
+        failOnError(err, &quot;Failed to declare an exchange&quot;)
+
+        q, err := ch.QueueDeclare(
+                &quot;&quot;,    // name
+                false, // durable
+                false, // delete when usused
+                true,  // exclusive
+                false, // no-wait
+                nil,   // arguments
+        )
+        failOnError(err, &quot;Failed to declare a queue&quot;)
+
+        err = ch.QueueBind(
+                q.Name, // queue name
+                &quot;&quot;,     // routing key
+                &quot;logs&quot;, // exchange
+                false,
+                nil,
+        )
+        failOnError(err, &quot;Failed to bind a queue&quot;)
+
+        msgs, err := ch.Consume(
+                q.Name, // queue
+                &quot;&quot;,     // consumer
+                true,   // auto-ack
+                false,  // exclusive
+                false,  // no-local
+                false,  // no-wait
+                nil,    // args
+        )
+        failOnError(err, &quot;Failed to register a consumer&quot;)
+
+        forever := make(chan bool)
+
+        go func() {
+                for d := range msgs {
+                        log.Printf(&quot; [x] %s&quot;, d.Body)
+                }
+        }()
+
+        log.Printf(&quot; [*] Waiting for logs. To exit press CTRL+C&quot;)
+        &lt;-forever
+}
+</code></pre>
+<p>这样我们就完成了。如果你想把日志保存到文件中，只需要打开控制台输入：</p>
+<pre><code>$ go run receive.go &gt; logs_from_rabbit.log
+</code></pre>
+<p>如果你想在屏幕中查看日志，那么打开一个新的终端然后运行：</p>
+<pre><code>$ go run receive.go
+</code></pre>
+<p>当然还要发送日志：</p>
+<pre><code>$ go run send.go
+</code></pre>
+<h2 id="路由">路由</h2>
+<p>在前面的小节中，我们实现了一个简单的日志系统。可以把日志消息广播给多个接收者。</p>
+<p>本节中我们打算新增一个功能 —— 使得它能够只订阅消息的一个字集。例如，我们只需要把严重的错误日志信息写入日志文件（存储到磁盘），但同时仍然把所有的日志信息输出到控制台中。</p>
+<h3 id="绑定bindings-1">绑定（Bindings）</h3>
+<p><em>前面的例子，我们已经创建过绑定（bindings），代码如下：</em></p>
+<pre><code class="language-go">err = ch.QueueBind(
+  q.Name, // queue name
+  &quot;&quot;,     // routing key
+  &quot;logs&quot;, // exchange
+  false,
+  nil)
+</code></pre>
+<p>绑定（binding）是指交换机（exchange）和队列（queue）的关系。可以简单理解为：这个队列（queue）对这个交换机（exchange）的消息感兴趣。</p>
+<p>绑定的时候可以带上一个额外的<code>routing_key</code>参数。为了避免与<code>Channel.Publish</code>的参数混淆，我们把它叫做绑定键<code>binding key</code>。以下是如何创建一个带绑定键的绑定。</p>
+<pre><code class="language-go">err = ch.QueueBind(
+  q.Name,    // queue name
+  &quot;black&quot;,   // routing key
+  &quot;logs&quot;,    // exchange
+  false,
+  nil)
+</code></pre>
+<p>绑定键的意义取决于交换机（exchange）的类型。我们之前使用过<code>fanout</code> 交换机会忽略这个值。</p>
+<h3 id="直连交换机direct-exchange">直连交换机（Direct exchange）</h3>
+<p>我们的日志系统广播所有的消息给所有的消费者（consumers）。我们打算扩展它，使其基于日志的严重程度进行消息过滤。例如我们也许只是希望将比较严重的错误（error）日志写入磁盘，以免在警告（warning）或者信息（info）日志上浪费磁盘空间。</p>
+<p>我们使用的<code>fanout</code> 交换机没有足够的灵活性 —— 它能做的仅仅是广播。</p>
+<p>我们将会使用<code>direct</code> 交换机来代替。路由的算法很简单 —— 交换机将会对<code>binding key</code>和<code>routing key</code>进行精确匹配，从而确定消息该分发到哪个队列。</p>
+<p>下图能够很好的描述这个场景：</p>
+<p><img src="http://www.rabbitmq.com/img/tutorials/direct-exchange.png" alt="direct-exchange"></p>
+<p>在这个场景中，我们可以看到<code>direct</code>交换机 X和两个队列进行了绑定。第一个队列使用<code>orange</code>作为binding key，第二个队列有两个绑定，一个使用<code>black</code>作为binding key，另外一个使用<code>green</code>。</p>
+<p>这样一来，当消息发布到routing key为<code>orange</code>的交换机时，就会被路由到队列Q1。routing key为<code>black</code>或者<code>green</code>的消息就会路由到Q2。其他的所有消息都将会被丢弃。</p>
+<h3 id="多个绑定multiple-bindings">多个绑定（Multiple bindings）</h3>
+<p><img src="http://www.rabbitmq.com/img/tutorials/direct-exchange-multiple.png" alt="direct-exchange-multiple"></p>
+<p>多个队列使用相同的binding key是合法的。这个例子中，我们可以添加一个X和Q1之间的绑定，使用<code>black</code>为binding key。这样一来，<code>direct</code>交换机就和<code>fanout</code>交换机的行为一样，会将消息广播到所有匹配的队列。带有routing key为<code>black</code>的消息会同时发送到Q1和Q2。</p>
+<h3 id="发送日志">发送日志</h3>
+<p>我们将会发送消息到一个<code>direct</code>，把日志等级作为<code>routing key</code>。这样接收日志就可以根据日志级别来选择它想要处理的日志。我们先看看发送日志。</p>
+<p>我们需要创建一个交换机（exchange）：</p>
+<pre><code class="language-go">err = ch.ExchangeDeclare(
+  &quot;logs_direct&quot;, // name
+  &quot;direct&quot;,      // type
+  true,          // durable
+  false,         // auto-deleted
+  false,         // internal
+  false,         // no-wait
+  nil,           // arguments
+)
+</code></pre>
+<p>然后我们发送一则消息：</p>
+<pre><code class="language-go">body := bodyFrom(os.Args)
+err = ch.Publish(
+  &quot;logs_direct&quot;,         // exchange
+  severityFrom(os.Args), // routing key
+  false, // mandatory
+  false, // immediate
+  amqp.Publishing{
+    ContentType: &quot;text/plain&quot;,
+    Body:        []byte(body),
+})
+</code></pre>
+<p>severityFrom函数内容如下：</p>
+<pre><code class="language-go">func severityFrom(args []string) string {
+        var s string
+        if (len(args) &lt; 2) || os.Args[1] == &quot;&quot; {
+                s = &quot;info&quot;
+        } else {
+                s = os.Args[1]
+        }
+        return s
+}
+</code></pre>
+<p>我们假设日志等级的值是info、warning、error中的一个。</p>
+<h3 id="订阅">订阅</h3>
+<p>处理接收消息的方式和之前差不多，只有一个例外，我们将会为我们感兴趣的每个严重级别分别创建一个新的绑定。</p>
+<pre><code class="language-go">q, err := ch.QueueDeclare(
+  &quot;&quot;,    // name
+  false, // durable
+  false, // delete when usused
+  true,  // exclusive
+  false, // no-wait
+  nil,   // arguments
+)
+failOnError(err, &quot;Failed to declare a queue&quot;)
+
+if len(os.Args) &lt; 2 {
+  log.Printf(&quot;Usage: %s [info] [warning] [error]&quot;, os.Args[0])
+  os.Exit(0)
+}
+for _, s := range os.Args[1:] {
+  log.Printf(&quot;Binding queue %s to exchange %s with routing key %s&quot;,
+     q.Name, &quot;logs_direct&quot;, s)
+  err = ch.QueueBind(
+    q.Name,        // queue name
+    s,             // routing key
+    &quot;logs_direct&quot;, // exchange
+    false,
+    nil)
+  failOnError(err, &quot;Failed to bind a queue&quot;)
+}
+</code></pre>
+<h3 id="完整代码-1">完整代码：</h3>
+<p><img src="http://www.rabbitmq.com/img/tutorials/python-four.png" alt="python-four"></p>
+<p><code>send.go</code>代码:</p>
+<pre><code class="language-go">package main
+
+import (
+        &quot;log&quot;
+        &quot;os&quot;
+        &quot;strings&quot;
+
+        &quot;github.com/streadway/amqp&quot;
+)
+
+func failOnError(err error, msg string) {
+        if err != nil {
+                log.Fatalf(&quot;%s: %s&quot;, msg, err)
+        }
+}
+
+func main() {
+        conn, err := amqp.Dial(&quot;amqp://guest:guest@localhost:5672/&quot;)
+        failOnError(err, &quot;Failed to connect to RabbitMQ&quot;)
+        defer conn.Close()
+
+        ch, err := conn.Channel()
+        failOnError(err, &quot;Failed to open a channel&quot;)
+        defer ch.Close()
+
+        err = ch.ExchangeDeclare(
+                &quot;logs_direct&quot;, // name
+                &quot;direct&quot;,      // type
+                true,          // durable
+                false,         // auto-deleted
+                false,         // internal
+                false,         // no-wait
+                nil,           // arguments
+        )
+        failOnError(err, &quot;Failed to declare an exchange&quot;)
+
+        body := bodyFrom(os.Args)
+        err = ch.Publish(
+                &quot;logs_direct&quot;,         // exchange
+                severityFrom(os.Args), // routing key
+                false, // mandatory
+                false, // immediate
+                amqp.Publishing{
+                        ContentType: &quot;text/plain&quot;,
+                        Body:        []byte(body),
+                })
+        failOnError(err, &quot;Failed to publish a message&quot;)
+
+        log.Printf(&quot; [x] Sent %s&quot;, body)
+}
+
+func bodyFrom(args []string) string {
+        var s string
+        if (len(args) &lt; 3) || os.Args[2] == &quot;&quot; {
+                s = &quot;hello&quot;
+        } else {
+                s = strings.Join(args[2:], &quot; &quot;)
+        }
+        return s
+}
+
+func severityFrom(args []string) string {
+        var s string
+        if (len(args) &lt; 2) || os.Args[1] == &quot;&quot; {
+                s = &quot;info&quot;
+        } else {
+                s = os.Args[1]
+        }
+        return s
+}
+</code></pre>
+<p><code>receive.go</code>代码：</p>
+<pre><code class="language-go">package main
+
+import (
+        &quot;log&quot;
+        &quot;os&quot;
+
+        &quot;github.com/streadway/amqp&quot;
+)
+
+func failOnError(err error, msg string) {
+        if err != nil {
+                log.Fatalf(&quot;%s: %s&quot;, msg, err)
+        }
+}
+
+func main() {
+        conn, err := amqp.Dial(&quot;amqp://guest:guest@localhost:5672/&quot;)
+        failOnError(err, &quot;Failed to connect to RabbitMQ&quot;)
+        defer conn.Close()
+
+        ch, err := conn.Channel()
+        failOnError(err, &quot;Failed to open a channel&quot;)
+        defer ch.Close()
+
+        err = ch.ExchangeDeclare(
+                &quot;logs_direct&quot;, // name
+                &quot;direct&quot;,      // type
+                true,          // durable
+                false,         // auto-deleted
+                false,         // internal
+                false,         // no-wait
+                nil,           // arguments
+        )
+        failOnError(err, &quot;Failed to declare an exchange&quot;)
+
+        q, err := ch.QueueDeclare(
+                &quot;&quot;,    // name
+                false, // durable
+                false, // delete when usused
+                true,  // exclusive
+                false, // no-wait
+                nil,   // arguments
+        )
+        failOnError(err, &quot;Failed to declare a queue&quot;)
+
+        if len(os.Args) &lt; 2 {
+                log.Printf(&quot;Usage: %s [info] [warning] [error]&quot;, os.Args[0])
+                os.Exit(0)
+        }
+        for _, s := range os.Args[1:] {
+                log.Printf(&quot;Binding queue %s to exchange %s with routing key %s&quot;,
+                        q.Name, &quot;logs_direct&quot;, s)
+                err = ch.QueueBind(
+                        q.Name,        // queue name
+                        s,             // routing key
+                        &quot;logs_direct&quot;, // exchange
+                        false,
+                        nil)
+                failOnError(err, &quot;Failed to bind a queue&quot;)
+        }
+
+        msgs, err := ch.Consume(
+                q.Name, // queue
+                &quot;&quot;,     // consumer
+                true,   // auto ack
+                false,  // exclusive
+                false,  // no local
+                false,  // no wait
+                nil,    // args
+        )
+        failOnError(err, &quot;Failed to register a consumer&quot;)
+
+        forever := make(chan bool)
+
+        go func() {
+                for d := range msgs {
+                        log.Printf(&quot; [x] %s&quot;, d.Body)
+                }
+        }()
+
+        log.Printf(&quot; [*] Waiting for logs. To exit press CTRL+C&quot;)
+        &lt;-forever
+}
+</code></pre>
+<p>如果你希望只是保存warning和error级别的日志到磁盘，只需要打开控制台并输入：</p>
+<pre><code>$ go run receive.go warning error &gt; logs_from_rabbit.log
+</code></pre>
+<p>如果你希望所有的日志信息都输出到屏幕中，打开一个新的终端，然后输入：</p>
+<pre><code>go run receive.go info warning error
+# =&gt; [*] Waiting for logs. To exit press CTRL+C
+</code></pre>
+<p>如果要触发一个error级别的日志，只需要输入：</p>
+<pre><code>go run send.go error &quot;Run. Run. Or it will explode.&quot;
+# =&gt; [x] Sent 'error':'Run. Run. Or it will explode.'
+</code></pre>
+
+        </div>
+        
+        <div class="my-4">
+    
+    <a href="https://damon-zhangb.github.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#消息队列</a>
+    
+    <a href="https://damon-zhangb.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#分布式</a>
+    
+</div>
+        
+        
+        
+
+
+        
+        
+        <div class="py-2">
+    
+    <div class="flex flex-col md:flex-row items-center my-8">
+        <a href="https://damon-zhangb.github.io/authors/me/" class="w-24 h-24 md:mr-4">
+            
+            
+            <img src="https://damon-zhangb.github.io/android-chrome-512x512.png" class="w-full bg-primary-bg rounded-full" alt="Avatar">
+            
+        </a>
+        <div class="w-full md:w-auto mt-4 md:mt-0">
+            <a href="https://damon-zhangb.github.io/authors/me/" class="block font-bold text-lg pb-1 mb-2 border-b">Zhang Bu</a>
+            <span class="block pb-2">Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos.</span>
+            
+            
+            
+            
+            
+            <a href="mailto:example@example.com" class="mr-1">
+                <i class="fab fa-fab fa-weixin"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-fab fa-qq"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-github"></i>
+            </a>
+            
+            
+            
+            
+            
+            <a href="https://example.com/" class="mr-1">
+                <i class="fab fa-fab fa-zhihu"></i>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
+        
+        
+        
+<div class="flex flex-col md:flex-row md:justify-between -mx-2 mt-4 px-2 pt-4 border-t">
+    <div>
+        
+        <span class="block font-bold">上一页</span>
+        <a href="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/" class="block">RPC --入门</a>
+        
+    </div>
+    <div class="md:text-right mt-4 md:mt-0">
+        
+    </div>
+</div>
+
+        
+
+
+
+    </div>
+    
+    <div class="col-span-2">
+        
+        
+<div class="bg-secondary-bg rounded p-6">
+    <h3 class="text-lg font-semibold mb-4">系列文章</h3>
+    <div class="content">
+        
+        
+        <a href="https://damon-zhangb.github.io/posts/rabbitmq1/">RabbitMQ（1）</a>
+        <br />
+        
+        <a href="https://damon-zhangb.github.io/posts/rabbitmq2/">RabbitMQ（2）</a>
+        <br />
+        
+        
+    </div>
+</div>
+        
+        
+        <div class="sticky top-16 z-10 hidden lg:block px-6 py-4  bg-primary-bg ">
+    <span class="text-lg font-semibold">本页内容</span>
+</div>
+<div class="sticky-toc hidden lg:block px-6 pb-6 ">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#发布订阅">发布/订阅</a>
+      <ul>
+        <li><a href="#交换机exchanges">交换机（Exchanges）</a>
+          <ul>
+            <li>
+              <ul>
+                <li><a href="#交换器列表">交换器列表</a></li>
+                <li><a href="#匿名的交换器">匿名的交换器</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#临时队列">临时队列</a></li>
+        <li><a href="#绑定bindings">绑定（Bindings）</a></li>
+        <li><a href="#完整代码">完整代码</a></li>
+      </ul>
+    </li>
+    <li><a href="#路由">路由</a>
+      <ul>
+        <li><a href="#绑定bindings-1">绑定（Bindings）</a></li>
+        <li><a href="#直连交换机direct-exchange">直连交换机（Direct exchange）</a></li>
+        <li><a href="#多个绑定multiple-bindings">多个绑定（Multiple bindings）</a></li>
+        <li><a href="#发送日志">发送日志</a></li>
+        <li><a href="#订阅">订阅</a></li>
+        <li><a href="#完整代码-1">完整代码：</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        enableStickyToc();
+    });
+</script>
+        
+    </div>
+    
+
+    
+    
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded p-6">
+        <h2 class="text-lg font-semibold mb-4">相关</h2>
+        <div class="content">
+            
+            <a href="https://damon-zhangb.github.io/posts/rabbitmq1/">RabbitMQ（1）</a>
+            <br />
+            
+            <a href="https://damon-zhangb.github.io/posts/rpc-protobuf/">RPC --ProtoBuf</a>
+            <br />
+            
+            <a href="https://damon-zhangb.github.io/posts/rpc-%E5%85%A5%E9%97%A8/">RPC --入门</a>
+            <br />
+            
+        </div>
+    </div>
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+
+      </div>
+    </div>
+    
+  </main>
+  <footer class="pl-scrollbar">
+    <div class="w-full max-w-screen-xl mx-auto"><div class="text-center p-6 pin-b">
+    <p class="text-sm text-tertiary-text">&copy; 2021 <a href="https://github.com/Damon-Zhangb">Damon.Zhang</a>
+ &middot;  Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</div></div>
+  </footer>
+</body>
+
+</html>
